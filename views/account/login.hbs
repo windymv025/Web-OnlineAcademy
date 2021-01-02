@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Academy</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/css/form-style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body style="background-color: #f0f1f4;">
+    <!-- Header -->
+    <div class="row header-logo " style="background-color: #f0f1f4;">
+        <div class="col-xl-9 col-lg-12">
+            <div class="row">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
+                    <a href="/"><img class="logo" src="/images/logo.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-12" class="login-register-icons">
+
+            <div class="row mt-4" style="display:flex; justify-content:flex-end;">
+                <div class="mr-3">
+                </div>
+                <div class="mr-1">
+                    <a href="/account/register">
+                        <button type="button" class="btn btn-success text-uppercase">
+                            Đăng ký
+                            <span>
+                                <img src="/img/dangky.png" alt="">
+                            </span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End header -->
+
+    <div>
+        {{#if err_message}}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{err_message}}
+        </div>
+        {{/if}}
+        <!-- Form -->
+        <form class="formLogin" method="POST">
+            <h3 class="formh1">Đăng nhập</h3>
+            <input class="inputLogin" placeholder="Tài khoản" type="text" required="" name="username">
+            <input class="inputLogin" placeholder="Mật khẩu" type="password" required="" name="password">
+            <label class="checkboxform"><input id="rememberme" name="rememberme" value="remember" type="checkbox" />
+                &nbsp;Lưu đăng nhập?</label>
+            <a href="#" class="textform">Quên mật khẩu?</a>
+            <button class="buttonLogin">Đăng nhập</button>
+            <div>
+                <a type="button" class="buttonGG text-center" href="/account/google">
+                    <i class="fab fa-google">&nbsp;&nbsp;&nbsp;&nbsp;Đăng nhập bằng Google</i>
+                </a>
+            </div>
+        </form>
+        <!--End  Form -->
+    </div>
+
+
+
+    <footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 myCols">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 myCols">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 myCols">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 myCols">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2016 Copyright Text </p>
+        </div>
+    </footer>
+</body>
+
+</html>

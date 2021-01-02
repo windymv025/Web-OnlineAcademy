@@ -1,0 +1,64 @@
+<!--View post for admin-->
+<div class="container">
+    <div class="row">
+        <div class="Customtitle mb-1 w-100">
+            <div class="my-mark">
+                <p class="ml-3">Danh sách các bài viết đã duyệt chờ xuất bản</p>
+            </div>
+        </div>
+        <div style="background-color: white; width: 100%;">
+            <div class="row mb-1">
+                {{#each this.approvedArticle}}
+                <div class="col-md-4 col-12">
+                    <div class="CategoryTitle">
+                        <p href="" class="badge badge-success">{{name}}</p>
+                    </div>
+                    <div class="card">
+                        <div style="height:250px!important; overflow: hidden;"><a href="/admin/review/{{category_id}}/{{id}}"><img src="{{avatar}}"
+                                    class="card-img-top card-img-categoryItem" alt="..."></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title my-card-title-s">{{title}}</h5>
+                            <p class="card-text card-article-sumary">{{description}}</p>
+                            <div class="post-date">{{create_at}}</div>
+                            <div class="d-flex flex-row-reverse">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="Customtitle mb-1 w-100">
+            <div class="my-mark">
+                <p class="ml-3">Danh sách các bài viết chờ duyệt</p>
+            </div>
+        </div>
+        <div style="background-color: white; width:100%">
+            <div class="row mb-1">
+                {{#each this.newArticle}}
+
+                <div class="col-md-4 col-12">
+                    <div class="CategoryTitle">
+                        <p href="" class="badge badge-success">{{name}}</p>
+                    </div>
+                    <div class="card">
+                        <div style="height:250px!important; overflow: hidden;"><a href="/admin/review/{{category_id}}/{{id}}"><img src="{{avatar}}"
+                                    class="card-img-top card-img-categoryItem" alt="..."></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title my-card-title-s">{{title}}</h5>
+                            <p class="card-text card-article-sumary">{{description}}</p>
+                            <div class="post-date">{{create_at}}</div>
+                            <div class="d-flex flex-row-reverse">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!--End view post-->

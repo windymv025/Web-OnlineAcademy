@@ -10,6 +10,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/admin/admin.route')
+var accountRouter = require('./routes/account/account.route')
+var categoryRouter = require('./routes/category/category.route')
 
 var app = express();
 
@@ -29,15 +32,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 //Route app
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
+app.use('/account', accountRouter);
+app.use('/category', categoryRouter);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	next(createError(404));
 });
 
+app.use(function (req, res) {
+	res.render('404', {
+		layout: false
+	})
+});
+// default error handler
+app.use(function (err, req, res, next) {
+	console.error(err.stack);
+	res.render('500', {
+		layout: false
+	})
+})
 // error handler
 app.use(function (err, req, res, next) {
 	// set locals, only providing error in development

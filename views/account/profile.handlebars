@@ -1,0 +1,187 @@
+<style>
+    /*login*/
+    .formLogin {
+        box-sizing: border-box;
+        width: 500px;
+        margin: 100px auto 0;
+        box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+        padding-bottom: 40px;
+        border-radius: 3px;
+        margin-bottom: 100px;
+    }
+
+    .formh1 {
+        box-sizing: border-box;
+        padding: 20px;
+        background-color: #28a745;
+        color: white;
+        text-align: center;
+    }
+
+    .inputLogin {
+        margin: 20px 25px;
+        width: 450px;
+        display: block;
+        border: none;
+        padding: 10px 0;
+        border-bottom: solid 1px #28a745;
+        transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #28a745 4%);
+        background-position: -450px 0;
+        background-size: 450px 100%;
+        background-repeat: no-repeat;
+        color: #28a745;
+    }
+
+    input:focus,
+    input:valid {
+        box-shadow: none;
+        outline: none;
+        background-position: 0 0;
+    }
+
+    input:focus::-webkit-input-placeholder,
+    input:valid::-webkit-input-placeholder {
+        color: #28a745;
+        font-size: 11px;
+        transform: translateY(-20px);
+        visibility: visible !important;
+    }
+
+    .buttonLogin {
+        border: none;
+        background: #28a745;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 6px;
+        width: 450px;
+        color: white;
+        margin-left: 25px;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .textform {
+        color: #28a745;
+        margin: 20px 25px;
+        display: block;
+    }
+
+    .checkboxform {
+        color: #28a745;
+        margin: 20px 25px;
+        display: block;
+    }
+
+    a:hover {
+        color: #28a745;
+    }
+
+    .textcolor {
+        margin: 20px 25px;
+        color: #28a745;
+    }
+
+    /*end login*/
+    .new {
+        padding-left: 200px;
+    }
+
+    .textNew {
+        padding-left: 150px;
+    }
+
+    .buttonFB {
+        border: none;
+        background: #1E90FF;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 6px;
+        width: 450px;
+        color: white;
+        margin-left: 25px;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+
+    .buttonGG {
+        border: none;
+        background: #DC143C;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 6px;
+        width: 450px;
+        color: white;
+        margin-left: 25px;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+</style>
+<div>
+    <form class="formLogin" method="POST" action="/account/profile/update">
+        <h1 class="formh1">Cập nhật</h1>
+        <input class="inputLogin" name="id" type="hidden" value="{{this.user.id}}" />
+        <input class="inputLogin" name="name" type="text" value="{{this.user.name}}">
+        <input class="inputLogin" name="email" type="email" value="{{this.user.email}}">
+        <input class="inputLogin" type="date" name="dob" value="{{this.user.dob}}">
+        <button class="buttonLogin" style="margin-bottom: 20px" type="button" data-toggle="modal"
+            data-target="#changpassword">Đổi mật khẩu</button>
+        <button class="buttonLogin" type="submit">Cập nhật</button>
+    </form>
+</div>
+<div class="modal fade" id="changpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="change" action="/account/profile/changepassword">
+                    <p>Vui lòng nhập mật khẩu hiện tại</p>
+                    <input type="hidden" name="id" value="{{this.user.id}}" />
+                    <input class="inputLogin" type="password" name="password" required />
+                    <p>Vui Lòng nhập mật khẩu mới</p>
+                    <input class="inputLogin" type="password" name="newpassword" required />
+                    <p>Vui lòng xác nhận mật khẩu mới</p>
+                    <input class="inputLogin" type="password" name="confirmnewpass" required />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="change" class="btn btn-primary">Ok</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var frm = $('#change');
+
+    frm.submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'failed') {
+                    alert('Change password failed!, please try again');
+                } else {
+                    alert('Change password successful');
+                    window.location.href = "/";
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            },
+        });
+    });
+</script>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>VN News - Tờ báo điện tử nhiều người đọc nhất Việt Nam</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/form-style.css">
+        <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body style="background-color: #f0f1f4;">
+        <!-- Header -->
+        <div class="row header-logo " style="background-color: #f0f1f4;">
+                <div class="col-xl-9 col-lg-12">
+                        <div class="row">
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
+                                        <a href="/"><img class="logo" src="/img/logo.png" alt=""></a>
+                                </div>
+                                <!--chạy tin mới nhất-->
+                                <div class="col-xl-10 col-lg-12">
+                                        <div class="mt-4">
+                                                <marquee id="marq" scrollamount="5" direction="left" loop="50"
+                                                        scrolldelay="0" behavior="scroll" onmouseover="this.stop()"
+                                                        onmouseout="this.start()">
+                                                        <a style="color: black;" href="#" target="_blank">Nhiệt độ TP
+                                                                HCM cao đỉnh điểm</a>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <a style="color: black;" href="#" target="_blank">Thông báo nghỉ
+                                                                lễ 30/4 - 1/5</a>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <a style="color: black;" href="#"
+                                                                target="_blank">Avenger-Endgame đạt doanh thu kỷ lục</a>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <a style="color: black;" href="#" target="_blank">Vũng tàu thất
+                                                                thủ dịp lễ 30/4 - 1/5</a>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                </marquee>
+                                        </div>
+                                </div>
+                                <!--chạy tin mới nhất-->
+                        </div>
+                </div>
+                <div class="col-xl-3 col-lg-12" class="login-register-icons">
+                        <div class="row mt-4" style="display:flex; justify-content:flex-end;">
+                                <div class="mr-3">
+                                        <a href="/account/login">
+                                                <button type="button" class="btn btn-success text-uppercase">
+                                                        Đăng nhập
+                                                        <span>
+                                                                <img src="/img/dangnhap.png" alt="">
+                                                        </span>
+                                                </button>
+                                        </a>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <!-- End header -->
+        <div>
+                <form novalidate action="" method="POST" class="formLogin" id="registerForm">
+                        <h1 class="formh1">Đăng ký</h1>
+                        <input type="text" class="inputLogin" id="txtName" placeholder="Họ tên" name="name">
+                        <input type="text" class="inputLogin" id="txtEmail" placeholder="Email" name="email">
+                        <input type="text" class="inputLogin" id="txtUsername" placeholder="Tên đăng nhập"
+                                name="username" autocomplete="off">
+                        <input class="inputLogin" id="txtPassword" placeholder="Mật khẩu" type="password"
+                                name="password">
+                        <input class="inputLogin" id="txtConfirm" placeholder="Nhập lại mật khẩu" type="password"
+                                name="confirm">
+                        <input type="text" class="inputLogin" id="txtDOB" placeholder="Date of birth" name="dob"
+                                autocomplete="off">
+                        <button class="buttonLogin" type="submit">Đăng ký</button>
+                </form>
+        </div>
+
+
+        <footer id="myFooter">
+                <div class="container">
+                        <div class="row">
+                                <div class="col-sm-3 myCols">
+                                        <h5>Get started</h5>
+                                        <ul>
+                                                <li><a href="#">Home</a></li>
+                                                <li><a href="#">Sign up</a></li>
+                                                <li><a href="#">Downloads</a></li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-3 myCols">
+                                        <h5>About us</h5>
+                                        <ul>
+                                                <li><a href="#">Company Information</a></li>
+                                                <li><a href="#">Contact us</a></li>
+                                                <li><a href="#">Reviews</a></li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-3 myCols">
+                                        <h5>Support</h5>
+                                        <ul>
+                                                <li><a href="#">FAQ</a></li>
+                                                <li><a href="#">Help desk</a></li>
+                                                <li><a href="#">Forums</a></li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-3 myCols">
+                                        <h5>Legal</h5>
+                                        <ul>
+                                                <li><a href="#">Terms of Service</a></li>
+                                                <li><a href="#">Terms of Use</a></li>
+                                                <li><a href="#">Privacy Policy</a></li>
+                                        </ul>
+                                </div>
+                        </div>
+                </div>
+                <div class="footer-copyright">
+                        <p>© 2016 Copyright Text </p>
+                </div>
+        </footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<meta charset="UTF-8">
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+        $(function () {
+
+                $('#txtDOB').datetimepicker({
+                        format: 'd/m/Y',
+                        timepicker: false,
+                        mask: true,
+                });
+
+                $('#registerForm').validate({
+                        rules: {
+                                username: {
+                                        required: true,
+                                        remote: {
+                                                url: '/account/is-available'
+                                        }
+                                },
+                                password: {
+                                        required: true,
+                                        minlength: 6
+                                },
+                                confirm: {
+                                        required: true,
+                                        equalTo: $('#txtPassword')
+                                },
+                                name: {
+                                        required: true
+                                },
+                                email: {
+                                        required: true,
+                                        email: true
+                                },
+                                dob: {
+                                        required: true
+                                }
+                        },
+                        messages: {
+                                username: {
+                                        required: 'Your name is required!!!!',
+                                        remote: 'Your username has been taken, please take another!!!'
+                                },
+                                password: {
+                                        required: 'Password is required!!!',
+                                        minlength: 'At least 6 character!!! '
+                                },
+                                confirm: {
+                                        required: "Your password !!!",
+                                        equalTo: "Your password does not match !!!"
+                                },
+                                name: {
+                                        required: "Your name is required!!!"
+                                },
+                                email: {
+                                        required: "Your email is required!!!",
+                                        email: "Please enter a valid email address!!!"
+                                },
+                                dob: {
+                                        required: "Valid date of birth is required !!!"
+                                }
+                        },
+                        errorElement: 'small',
+                        errorClass: 'help-block text-danger',
+                        highlight: function (e) {
+                                $(e).removeClass('is-valid').addClass('is-invalid');
+                        },
+                        unhighlight: function (e) {
+                                $(e).removeClass('is-invalid').addClass('is-valid');
+                        }
+                });
+        });
+</script>
+
+</html>

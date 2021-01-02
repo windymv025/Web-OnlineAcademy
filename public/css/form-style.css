@@ -1,0 +1,109 @@
+/*login*/
+.formLogin {
+  box-sizing: border-box;
+  width: 500px;
+  margin: 100px auto 0;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+  padding-bottom: 40px;
+  border-radius: 3px;
+  margin-bottom: 100px;
+}
+.formh1 {
+  box-sizing: border-box;
+  padding: 16px;
+  background-color: #EC5252;
+  color: white;
+  text-align: center;
+}
+ 
+.inputLogin {
+  margin: 20px 25px;
+  width: 450px;
+  display: block;
+  border: none;
+  padding: 10px 0;
+  border-bottom: solid 1px #EC5252;
+  transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #EC5252 4%);
+  background-position: -450px 0;
+  background-size: 450px 100%;
+  background-repeat: no-repeat;
+  color: #EC5252;
+}
+input:focus, input:valid {
+  box-shadow: none;
+  outline: none;
+  background-position: 0 0;
+}
+input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder {
+  color: #EC5252;
+  font-size: 11px;
+  transform: translateY(-20px);
+  visibility: visible !important;
+}
+ 
+.buttonLogin {
+  border: none;
+  background: #EC5252;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 450px;
+  color: white;
+  margin-left: 25px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+.textform{
+    color: #EC5252;
+    margin: 20px 25px;
+    display: block;
+}
+.checkboxform{
+  color: #EC5252;
+  margin: 20px 25px;
+  display: block;
+}
+a:hover{
+  color: #EC5252;
+}
+.textcolor{
+  margin: 20px 25px;
+  color: #EC5252;
+}
+/*end login*/
+.new{
+  padding-left: 200px;
+}
+.textNew{
+  padding-left: 150px;
+}
+
+.buttonFB {
+  border: none;
+  background: #1E90FF;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 450px;
+  color: white;
+  margin-left: 25px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+.buttonGG {
+  border: none;
+  background: #DC143C;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 450px;
+  color: white;
+  margin-left: 25px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
