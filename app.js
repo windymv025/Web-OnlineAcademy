@@ -7,6 +7,7 @@ var hbs_sections = require('express-handlebars-sections');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var Handlebars = require('handlebars');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -69,6 +70,42 @@ app.use(function (err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	// res.render('error');
+});
+
+
+
+Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+    if (v1 === v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+Handlebars.registerHelper('ifMoreCond', function (v1, operator, v2, options) {
+
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+            return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
 });
 
 module.exports = app;

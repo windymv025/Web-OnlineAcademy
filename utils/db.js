@@ -6,7 +6,7 @@ var createConnection = () => {
         port: 3306,
         user: 'root',
         password: '',
-        database: 'main'
+        database: 'public'
     });
 }
 
@@ -76,7 +76,7 @@ module.exports = {
 
     delete: (tableName, idField, id) => {
         return new Promise((resolve, reject) => {
-            var sql = `delete from ${tableName} where ${idField} = ?`;
+            var sql = `update ${tableName} set status = -1 where ${idField} = ${id}`;
             var connection = createConnection();
             connection.connect();
             connection.query(sql, id, (error, value) => {

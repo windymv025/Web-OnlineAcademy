@@ -9,46 +9,16 @@ let auth = require('../../middleware/auth');
 
 let UserModel = require('../../models/user.model');
 const { now } = require('moment');
+const stringUtil = require('../../utils/StringUtil');
+const userModel = require('../../models/user.model');
+const bcrypt = require('bcrypt');
+const userType = require('../../enum/userType');
 
 
 let router = express.Router();
 
-router.get('/manageCategories', authAdmin, (req, res, next) => {
-    categoryModel.all()
-        .then((category) => {
-            let parentCat = [];
-            let childCat = [];
-            category.forEach(row => {
-                if (row.parent_id === null) {
-                    parentCat.push(row);
-                } else {
-                    childCat.push(row);
-                }
-            });
-            parentCat.forEach((row, index) => {
-                let children = [];
-                childCat.forEach(rowchild => {
-                    if (rowchild.parent_id === row.id)
-                        children.push(rowchild);
-                })
-                parentCat[index] = { row, children };
-            })
-            res.render('admin/manageCategories', { layout: 'main', categories: parentCat });
-        }).catch(err => {
-            throw err;
-        })
-
-});
-
-
 router.get('/category', async function (req, res) {
-    const rows = await categoryModel.all();
-    // res.render('categories/index', {
-    //   categories: rows,
-    //   empty: rows.length === 0
-    // });
-
-    const p = categoryModel.all();
+    const p = categoryModel.allParent();
     p.then(function (rows) {
         res.render('category/index', {
             categories: rows,
@@ -58,30 +28,27 @@ router.get('/category', async function (req, res) {
         console.error(err);
         res.send('View error log at server console.');
     });
-
-    db.load('select * from category', function (rows) {
-        res.render('category/index', {
-            category: rows,
-            empty: rows.length === 0
-        });
-    });
 })
 
 router.get('/category/add', function (req, res) {
-    res.render('category/add');
+    const parents = categoryModel.allParent()
+    parents.then(function (item) {
+        res.render('category/add', {
+            parents: item
+        });
+    })
 })
 
 router.post('/category/add', async function (req, res) {
     let entity;
     let name = req.body.categoryName;
-    let parent_id;
-    if (req.body.parent != '0') {
-        parent_id = parseInt(req.body.parent);
-    }
+    let parent_id = res.body ? res.body.parentCategory ? Number(res.body.parentCategory) != -1 ? res.body.parentCategory : null : null : null;
+
     entity = {
         name: name,
-        created_at: now(),
-        status: 1
+        created_at: new Date(),
+        status: 1,
+        parent_category_id: parent_id ? parseInt(parent_id) : null
     }
     categoryModel.add(entity)
         .then(() => {
@@ -92,76 +59,233 @@ router.post('/category/add', async function (req, res) {
         })
 })
 
-router.post('/manageCategories/:id', authAdmin, (req, res, next) => {
-    categoryModel.updateName(req.body.categoryName, req.params.id)
-        .then(() => {
-            res.redirect('/admin/manageCategories');
-        })
-        .catch(err => {
-            throw err;
-        })
-
-});
-router.post('/manageCategories', authAdmin, (req, res, next) => {
+router.post('/category/:id/add-child', async function (req, res) {
     let entity;
-    let name = req.body.categoryName;
-    let parent_id;
-    if (req.body.parent != '0') {
-        parent_id = parseInt(req.body.parent);
-    }
+    let name = req.body.nameChild;
+    let parent_id = req.params.id
+
     entity = {
-        name,
-        parent_id
+        name: name,
+        created_at: new Date(),
+        status: 1,
+        parent_category_id: parseInt(parent_id)
     }
     categoryModel.add(entity)
         .then(() => {
-            res.redirect('/admin/manageCategories');
+            res.redirect(`/admin/category/${parent_id}`);
+        })
+        .catch(err => {
+            throw err;
+        })
+})
+
+router.get('/category/:id', function (req, res) {
+    categoryModel.byId(req.params.id).then(function (category) {
+        const child = categoryModel.childByParent(req.params.id)
+        child.then(function (result) {
+            res.render('category/edit', {
+                category: category[0],
+                child: result,
+                emptyChild: result.length === 0
+            });
+        })
+    })
+})
+
+router.post('/category/:id', authAdmin, (req, res, next) => {
+    categoryModel.update(req.body.name, req.params.id)
+        .then(() => {
+            res.redirect('/admin/category');
         })
         .catch(err => {
             throw err;
         })
 });
 
-router.use('/user-management', authAdmin, (req, res) => {
-    console.log("route admin", req);
-    // res.render('admin/manageUser', {
-    //     layout: 'main',
-    //     usernormal: [],
-    //     writer: [],
-    //     editor: [],
-    //     categories: []
-    // });
+router.post('/category/delete/:id', authAdmin, (req, res, next) => {
+    const ret = categoryModel.del(req.params.id).then(function (result) {
+        res.redirect('/admin/category');
+    });
+});
+
+router.post('/category/delete/:id/child/:childId', authAdmin, (req, res, next) => {
+    const ret = categoryModel.del(req.params.childId).then(function (result) {
+        res.redirect(`/admin/category/${req.params.id}`);
+    });
+});
+
+router.post('/category/:id/child/:childId', authAdmin, (req, res, next) => {
+    categoryModel.update(req.body.childName, Number(req.params.childId))
+        .then(() => {
+            res.redirect(`/admin/category/${req.params.id}`);
+        })
+        .catch(err => {
+            throw err;
+        })
+});
+
+router.get('/lecture', authAdmin, (req, res) => {
     let filter = {
         page: 0,
-        pageSize: 1,
-        type: 2,
-        status: 1
+        pageSize: 10,
+        type: 1,
+        status: 1,
+        orderBy: {
+            created_at: 'desc'
+        }
     }
 
     let users = UserModel.search(filter);
-    let childCat = [];
-    res.app.locals.category.forEach(row => {
-        if (row.parent_id !== null) {
-            childCat.push(row);
-        }
-    });
-
-    Promise.all([users, [], []])
-        .then(values => {
-            let editorWithCategories = []
-            values[2].forEach((row, index) => {
-                editorWithCategories[index] = { row, childCat }
-            })
-            res.render('admin/manageUser', {
-                layout: 'main',
-                usernormal: values[0],
-                writer: values[1],
-                editor: editorWithCategories,
-                categories: childCat
-            });
-        })
+    users.then(values => {
+        res.render('user/lecture/index', {
+            layout: 'main',
+            users: values,
+            empty: values.length === 0
+        });
+    })
 
 });
+
+router.get('/lecture/add', authAdmin, (req, res) => {
+    res.render('user/lecture/add');
+})
+
+router.post('/lecture/add', authAdmin, (req, res) => {
+    let name = req.body.name;
+    let email = req.body.email;
+    let errorName = null;
+    let errorMail = null;
+    if (name == null) {
+        errorName = 'Vui lòng nhập tên'
+    } else if (name.trim() == '') {
+        errorName = 'Vui lòng nhập tên'
+    } else if (stringUtil.validSpecialCharacter(name)) {
+        errorName = 'Vui lòng nhập tên'
+    } else if (email == null) {
+        errorMail = 'Vui lòng nhập email'
+    } else if (email.trim() == '') {
+        errorMail = 'Vui lòng nhập email'
+    } else if (!stringUtil.validateEmail(email)) {
+        errorMail = 'Vui lòng nhập email đúng định dạng'
+    }
+    if (errorName != null || errorMail != null) {
+        res.render('user/lecture/add', {
+            errorMail: errorMail,
+            errorName: errorName,
+        });
+    } else {
+        let salt = 10;
+        let hash = bcrypt.hashSync('00000', salt);
+        let entity = {
+            name,
+            email,
+            type: 1,
+            status: 1,
+            password: hash,
+            created_at: new Date()
+        }
+        userModel.add(entity).then(() => res.redirect('/admin/lecture'))
+            .catch(err => {
+                throw err;
+            })
+    }
+
+})
+
+router.get('/lecture/:id', authAdmin, (req, res) => {
+    let filter = {
+        id: req.params.id,
+        type: 1,
+        status: 1,
+        singleResult: true
+    }
+
+    let users = UserModel.search(filter);
+    users.then(values => {
+        res.render(`user/lecture/edit`, {
+            layout: 'main',
+            user: values[0],
+        });
+    })
+})
+
+router.post('/lecture/:id', authAdmin, (req, res) => {
+    let user = userModel.singleById(req.params.id)
+    let name = req.body.name;
+    let email = req.body.email;
+    let errorName = null;
+    let errorMail = null;
+    if (name == null) {
+        errorName = 'Vui lòng nhập tên'
+    } else if (name.trim() == '') {
+        errorName = 'Vui lòng nhập tên'
+    } else if (stringUtil.validSpecialCharacter(name)) {
+        errorName = 'Vui lòng nhập tên'
+    } else if (email == null) {
+        errorMail = 'Vui lòng nhập email'
+    } else if (email.trim() == '') {
+        errorMail = 'Vui lòng nhập email'
+    } else if (!stringUtil.validateEmail(email)) {
+        errorMail = 'Vui lòng nhập email đúng định dạng'
+    }
+    if (errorName != null || errorMail != null) {
+        Promise.all([user])
+            .then((resultUser) => {
+                res.render(`user/lecture/edit`, {
+                    errorMail: errorMail,
+                    errorName: errorName,
+                    user: {
+                        ...resultUser[0][0],
+                        name: name,
+                        email: email
+                    }
+                });
+            })
+            .catch((err) => {
+                throw err;
+            })
+    } else {
+        let entity = {
+            id: req.params.id,
+            name,
+            email,
+            updated_at: new Date()
+        }
+        userModel.update(entity).then(() => res.redirect(`/admin/lecture/${req.params.id}`))
+            .catch(err => {
+                throw err;
+            })
+    }
+})
+
+router.post('/lecture/delete/:id', authAdmin, (req, res, next) => {
+    userModel.delete(req.params.id).then(function (result) {
+        res.redirect('/admin/lecture');
+    });
+});
+
+router.get('/student', authAdmin, (req, res) => {
+    let filter = {
+        page: 0,
+        pageSize: 10,
+        type: 2,
+        status: 1,
+        orderBy: {
+            created_at: 'desc'
+        }
+    }
+
+    let users = UserModel.search(filter);
+    users.then(values => {
+        res.render('user/student/index', {
+            layout: 'main',
+            users: values,
+            empty: values.length === 0
+        });
+    })
+
+});
+
 router.post('/manageUser/writer/:writerId', authAdmin, (req, res) => {
     let name = req.body.writerName;
     let password = req.body.writerPassword;

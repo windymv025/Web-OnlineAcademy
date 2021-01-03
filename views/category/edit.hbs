@@ -1,32 +1,102 @@
 <form method="POST">
-  <div class="card">
-    <h5 class="card-header">
-      Category
-    </h5>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="txtCatID">#</label>
-        <input type="text" class="form-control" id="txtCatID" name="CatID" value="{{this.category.CatID}}" readonly>
-      </div>
-      <div class="form-group">
-        <label for="txtCatName">Category</label>
-        <input type="text" class="form-control" id="txtCatName" name="CatName" value="{{this.category.CatName}}"
-          autofocus>
-      </div>
-    </div>
-    <div class="card-footer text-muted">
-      <a class="btn btn-primary" href="/admin/categories" role="button">
-        <i class="fa fa-backward" aria-hidden="true"></i>
-        Back to List
-      </a>
-      <button type="submit" class="btn btn-outline-danger" formaction="/admin/categories/del">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-        Delete
-      </button>
-      <button type="submit" class="btn btn-outline-success" formaction="/admin/categories/patch">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Save
-      </button>
-    </div>
-  </div>
+	<div class="card">
+		<h5 class="card-header">
+			Category
+		</h5>
+		<div class="card-body">
+			<div class="form-group">
+				<label for="txtCatName">Category Name</label>
+				<input type="text" class="form-control" id="txtCatName" name="name" value="{{this.category.name}}"
+					autofocus>
+			</div>
+		</div>
+		<div class="d-flex justify-content-between mr-3 ml-3">
+			<div class="text-muted">
+				<a class="btn btn-primary" href="/admin/category" role="button">
+					<i class="fa fa-backward" aria-hidden="true"></i>
+					Back to List
+				</a>
+				<button type="submit" class="btn btn-outline-danger"
+					formaction="/admin/category/delete/{{this.category.id}}">
+					<i class="fa fa-trash-o" aria-hidden="true"></i>
+					Delete
+				</button>
+				<button type="submit" class="btn btn-outline-success" formaction="/admin/category/{{this.category.id}}">
+					<i class="fa fa-check" aria-hidden="true"></i>
+					Save
+				</button>
+			</div>
+			<a class="btn btn-outline-success col-2" role="button" onclick="showInput()" style="display: block;">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+				Add Category Child
+			</a>
+		</div>
+		<form method="POST">
+			<div class="form-group m-3" style="display: none;">
+				<label for="txtCatName">Child Category Name</label>
+				<div class=" d-flex justify-content-between">
+					<input type="text" class="form-control" id="txtCatName" name="nameChild" autofocus>
+					<a class="btn btn-outline-danger col-1 ml-4" onclick="hideInput()">
+						<i class="fa fa-trash-o" aria-hidden="true"></i>
+						Cancel
+					</a>
+					<button class="btn btn-outline-success col-1 ml-4"
+						formaction="/admin/category/{{this.category.id}}/add-child">
+						<i class="fa fa-check" aria-hidden="true"></i>
+						Save
+					</button>
+				</div>
+			</div>
+		</form>
+		{{#if this.emptyChild}}
+		<div class="m-3">
+			<h5 scope="col">List child category</h5>
+			<p class="card-text">Không có dữ liệu.</p>
+		</div>
+		{{else}}
+
+		<table class="table table-hover">
+			<thead class=" ml-4 mr-4">
+				<tr>
+					<th scope="col">List child category</th>
+					<th scope="col">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody class=" ml-4 mr-4">
+				{{#each this.child}}
+				<tr>
+					<form method="POST">
+						<td><input type="text" class="form-control" id="txtChildName" name="childName" value="{{name}}">
+						</td>
+						<td class="text-right">
+							<button type="submit" class="btn btn-outline-danger col-2"
+								formaction="/admin/category/delete/{{parent_category_id}}/child/{{id}}">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+								Delete
+							</button>
+							<button type="submit" class="btn btn-outline-success col-2 ml-4"
+								formaction="/admin/category/{{parent_category_id}}/child/{{id}}">
+								<i class="fa fa-check" aria-hidden="true"></i>
+								Save
+							</button>
+						</td>
+					</form>
+
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+
+		{{/if}}
+	</div>
 </form>
+<script>
+	function showInput() {
+		document.querySelector(".form-group.m-3").style.display = "block";
+		document.querySelector(".btn.btn-outline-success.col-2").style.display = 'none'
+	}
+	function hideInput() {
+		document.querySelector(".form-group.m-3").style.display = "none";
+		document.querySelector(".btn.btn-outline-success.col-2").style.display = 'block'
+	}
+</script>

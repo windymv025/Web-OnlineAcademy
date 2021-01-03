@@ -3,7 +3,10 @@ const TBL_CATEGORIES = 'category';
 
 module.exports = {
     allchild: () => {
-        return db.load(`select * from category where parent_id != 'null'`)
+        return db.load(`select * from category where parent_category_id is not null  and status = 1 order by created_at desc`)
+    },
+    allParent: () => {
+        return db.load(`select * from category where parent_category_id is null  and status = 1 order by created_at desc `)
     },
     byId: (id) => {
         return db.load(`select * from category where id=${id}`)
@@ -11,9 +14,14 @@ module.exports = {
     updateName: (name, id) => {
         return db.load(`update category set name = '${name}' where id = ${id}`);
     },
-
+    update: (name, id) => {
+        return db.load(`update category set name = '${name}' where id = ${id}`);
+    },
     all() {
         return db.load(`select * from ${TBL_CATEGORIES}`);
+    },
+    childByParent: (id) => {
+        return db.load(`select * from category where parent_category_id  = ${id}  and status = 1 order by created_at desc`)
     },
 
     allWithDetails() {
@@ -38,9 +46,9 @@ module.exports = {
         return db.add(TBL_CATEGORIES, entity)
     },
 
-    del(entity) {
-        const condition = { CatID: entity.CatID };
-        return db.del(condition, TBL_CATEGORIES);
+    async del(id) {
+        let result = await db.delete(TBL_CATEGORIES, 'id', parseInt(id))
+        return result;
     },
 
     patch(entity) {
