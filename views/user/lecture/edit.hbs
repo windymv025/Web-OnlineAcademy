@@ -1,0 +1,41 @@
+<form method="POST" action="/admin/lecture/add">
+    <div class="card">
+        <h5 class="card-header">
+            GIÁO VIÊN {{this.user.name}}
+        </h5>
+        <div class="card-body">
+            <div class="form-group col-4">
+                <label for="txtName">Họ và tên</label>
+                <input type="text" class="form-control" id="txtName" name="name" autofocus value="{{this.user.name}}">
+                {{#if this.errorName }}
+                <p class="text-danger">{{this.errorName}}</p>
+                {{else}}
+
+                {{/if}}
+            </div>
+            <div class="form-group col-4">
+                <label for="txtEmail">Email</label>
+                <input type="mail" class="form-control" id="txtEmail" name="email" value="{{this.user.email}}">
+                {{#if this.errorMail }}
+                <p class="text-danger">{{this.errorMail}}</p>
+                {{else}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="mr-3 ml-4">
+            <a class="btn btn-primary ml-2" href="/admin/lecture" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Back to List
+            </a>
+            <button type="submit" class="btn btn-outline-danger"
+                formaction="/admin/lecture/delete/{{this.user.id}}">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                Delete
+            </button>
+            <button type="submit" class="btn btn-outline-success" formaction="/admin/lecture/{{this.user.id}}">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>

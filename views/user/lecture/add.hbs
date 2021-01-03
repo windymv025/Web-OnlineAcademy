@@ -1,0 +1,36 @@
+<form method="POST" action="/admin/lecture/add">
+    <div class="card">
+        <h5 class="card-header">
+            THÊM GIÁO VIÊN
+        </h5>
+        <div class="card-body">
+            <div class="form-group col-4">
+                <label for="txtName">Họ và tên</label>
+                <input type="text" class="form-control" id="txtName" name="name" autofocus>
+                {{#if this.errorName }}
+                <p class="text-danger">{{this.errorName}}</p>
+                {{else}}
+
+                {{/if}}
+            </div>
+            <div class="form-group col-4">
+                <label for="txtEmail">Email</label>
+                <input type="mail" class="form-control" id="txtEmail" name="email" autofocus>
+                {{#if this.errorMail }}
+                <p class="text-danger">{{this.errorMail}}</p>
+                {{else}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <a class="btn btn-primary" href="/admin/lecture" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Back to List
+            </a>
+            <button type="submit" class="btn btn-outline-success">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>

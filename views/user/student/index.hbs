@@ -1,0 +1,42 @@
+<div class="card">
+	<h5 class="card-header d-flex justify-content-between">
+		DANH SÁCH HỌC SINH
+		{{!-- <a class="btn btn-outline-success" href="category/add" role="button">
+			<i class="fa fa-plus" aria-hidden="true"></i>
+			Thêm học sinh
+		</a> --}}
+	</h5>
+	{{#if this.empty}}
+	<div class="card-body">
+		<p class="card-text">Không có dữ liệu.</p>
+	</div>
+	{{else}}
+	<div class="card-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Name</th>
+					<th scope="col">Email</th>
+					<th scope="col">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each this.users}}
+				<tr>
+					<th scope="row">{{id}}</th>
+					<td>{{name}}</td>
+					<td>{{email}}</td>
+					<td class="text-right">
+						<a class="btn btn-sm btn-primary" href="/admin/student/{{id}}" role="button"
+							title="Edit student">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</a>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+</div>
