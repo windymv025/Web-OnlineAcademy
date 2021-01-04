@@ -72,7 +72,33 @@ app.use(function (err, req, res, next) {
 	// res.render('error');
 });
 
+Handlebars.registerHelper('page', function(n, block) {
+    var accum = '';
+    for(var i = 1; i <= n; ++i)
+        accum += block.fn(i);
+    return accum;
+});
 
+Handlebars.registerHelper('for', function(from, to, incr, block) {
+    var accum = '';
+    for(var i = from; i < to; i += incr)
+        accum += block.fn(i);
+    return accum;
+});
+
+Handlebars.registerHelper('prevPage', function(from, to, incr, block) {
+    var accum = '';
+    for(var i = from; i < to; i += incr)
+        accum += block.fn(i);
+    return accum;
+});
+
+Handlebars.registerHelper('nextPage', function(from, to, incr, block) {
+    var accum = '';
+    for(var i = from + 1; i <= to ; i += incr)
+        accum += block.fn(i);
+    return accum;
+});
 
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1 === v2) {

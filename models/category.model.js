@@ -2,11 +2,21 @@ var db = require('../utils/db');
 const TBL_CATEGORIES = 'category';
 
 module.exports = {
-    allchild: () => {
-        return db.load(`select * from category where parent_category_id is not null  and status = 1 order by created_at desc`)
+    allchild: (page, pageSize) => {
+        let sql = `select * from category where parent_category_id is not null  and status = 1 order by created_at desc`
+        if (page != null) {
+            let offset = Number(page) * Number(pageSize)
+            sql = sql + ` limit ${pageSize} offset ${offset} `
+        }
+        return db.load(sql)
     },
-    allParent: () => {
-        return db.load(`select * from category where parent_category_id is null  and status = 1 order by created_at desc `)
+    allParent: (page, pageSize) => {
+        let sql = `select * from category where parent_category_id is null  and status = 1 order by created_at desc `
+        if (page != null) {
+            let offset = Number(page) * Number(pageSize)
+            sql = sql + ` limit ${pageSize} offset ${offset} `
+        }
+        return db.load(sql)
     },
     byId: (id) => {
         return db.load(`select * from category where id=${id}`)

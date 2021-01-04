@@ -27,8 +27,13 @@ module.exports = {
                 }
             })
         }
-        if (!filter.singleResult) {
-            sql = sql + ` LIMIT  ${filter.pageSize} offset  ${filter.page} `
+        if (filter.singleResult) {
+            sql = sql + ' limit 1 '
+        } else {
+            if (filter.page != null) {
+                let offset = Number(filter.page) * Number(filter.pageSize)
+                sql = sql + ` LIMIT  ${filter.pageSize} offset ${offset} `
+            }
         }
         return db.load(sql)
     },

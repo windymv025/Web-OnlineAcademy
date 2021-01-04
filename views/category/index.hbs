@@ -1,39 +1,61 @@
 <div class="card">
-  <h5 class="card-header d-flex justify-content-between">
-    Categories
-    <a class="btn btn-outline-success" href="category/add" role="button">
-      <i class="fa fa-plus" aria-hidden="true"></i>
-      Add Category
-    </a>
-  </h5>
-  {{#if this.empty}}
-  <div class="card-body">
-    <p class="card-text">Không có dữ liệu.</p>
-  </div>
-  {{else}}
-  <div class="card-body">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Category</th>
-          <th scope="col">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each this.categories}}
-        <tr>
-          <th scope="row">{{id}}</th>
-          <td>{{name}}</td>
-          <td class="text-right">
-            <a class="btn btn-sm btn-primary" href="/admin/category/{{id}}" role="button" title="Edit Category">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-  {{/if}}
+	<h5 class="card-header d-flex justify-content-between">
+		Categories
+		<a class="btn btn-outline-success" href="category/add" role="button">
+			<i class="fa fa-plus" aria-hidden="true"></i>
+			Add Category
+		</a>
+	</h5>
+	{{#if this.empty}}
+	<div class="card-body">
+		<p class="card-text">Không có dữ liệu.</p>
+	</div>
+	{{else}}
+	<div class="card-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Category</th>
+					<th scope="col">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each this.categories}}
+				<tr>
+					<th scope="row">{{id}}</th>
+					<td>{{name}}</td>
+					<td class="text-right">
+						<a class="btn btn-sm btn-primary" href="/admin/category/{{id}}" role="button"
+							title="Edit Category">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</a>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation example" class="float-right">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.prevPage}}&pageSize=5" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				{{#prevPage 1 this.currentPage 1}}
+					<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/prevPage}}
+				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{ this.currentPage }}</a></li>
+				{{#nextPage this.currentPage this.totalPage 1}}
+					<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/nextPage}}
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.nextPage}}&pageSize=5" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	{{/if}}
 </div>

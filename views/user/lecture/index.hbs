@@ -37,6 +37,28 @@
 				{{/each}}
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="float-right">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.prevPage}}&pageSize=5" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				{{#prevPage 1 this.currentPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/prevPage}}
+				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{
+						this.currentPage }}</a></li>
+				{{#nextPage this.currentPage this.totalPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/nextPage}}
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.nextPage}}&pageSize=5" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 	{{/if}}
 </div>

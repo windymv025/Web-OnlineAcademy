@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
     {{{_sections.css}}}
@@ -110,7 +110,12 @@
         <!-- end off navigation bar -->
         <!-- Content area -->
 
-        {{{body}}}
+        <div style=" display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;">
+            {{{body}}}
+        </div>
 
         <!--end of Content -->
 
@@ -164,6 +169,7 @@
         integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
         crossorigin="anonymous"></script>
     {{{_sections.js}}}
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 </body>
 
 </html>
