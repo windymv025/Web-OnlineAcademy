@@ -5,8 +5,7 @@ var handlebars = require('express-handlebars');
 var hbs_sections = require('express-handlebars-sections');
 
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var morgan = require('morgan');
 var Handlebars = require('handlebars');
 
 var indexRouter = require('./routes/index');
@@ -14,29 +13,39 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin/admin.route')
 var accountRouter = require('./routes/account/account.route')
 var categoryRouter = require('./routes/category/category.route')
+const viewEngine = require('./middleware/viewEngine')
+const session = require('./middleware/session')
+const passport = require('./middleware/passport')
 
 var app = express();
 
+
+viewEngine(app)
+app.set('views', path.join(__dirname, 'views'));
+app.use(require('./middleware/auth.local'));
+session(app)
+passport(app)
+
 var server = app.listen(8000, function () {
-	var host = server.address().address == '::' ? '127.0.0.1' : server.address().address
-	var port = server.address().port
-	console.log("Ung dung Node.js dang hoat dong tai dia chi: http://%s:%s", host, port)
+    var host = server.address().address == '::' ? '127.0.0.1' : server.address().address
+    var port = server.address().port
+    console.log("Ung dung Node.js dang hoat dong tai dia chi: http://%s:%s", host, port)
 });
 
-// view engine setup
-app.engine('hbs', handlebars({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//Route app
-app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+//App route
+app.get('/', function (req, res, next) {
+    if (req.isAuthenticated()) {
+        res.redirect('home');
+    } else {
+        res.redirect('/account/login')
+    }
+});
 app.use('/admin', adminRouter);
 app.use('/account', accountRouter);
 app.use('/category', categoryRouter);
@@ -46,56 +55,56 @@ app.use('/category', categoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	next(createError(404));
+    next(createError(404));
 });
 
 app.use(function (req, res) {
-	res.render('404', {
-		layout: false
-	})
+    res.render('404', {
+        layout: false
+    })
 });
 // default error handler
 app.use(function (err, req, res, next) {
-	console.error(err.stack);
-	res.render('500', {
-		layout: false
-	})
+    console.error(err.stack);
+    res.render('500', {
+        layout: false
+    })
 })
 // error handler
 app.use(function (err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-	// render the error page
-	res.status(err.status || 500);
-	// res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    // res.render('error');
 });
 
-Handlebars.registerHelper('page', function(n, block) {
+Handlebars.registerHelper('page', function (n, block) {
     var accum = '';
-    for(var i = 1; i <= n; ++i)
+    for (var i = 1; i <= n; ++i)
         accum += block.fn(i);
     return accum;
 });
 
-Handlebars.registerHelper('for', function(from, to, incr, block) {
+Handlebars.registerHelper('for', function (from, to, incr, block) {
     var accum = '';
-    for(var i = from; i < to; i += incr)
+    for (var i = from; i < to; i += incr)
         accum += block.fn(i);
     return accum;
 });
 
-Handlebars.registerHelper('prevPage', function(from, to, incr, block) {
+Handlebars.registerHelper('prevPage', function (from, to, incr, block) {
     var accum = '';
-    for(var i = from; i < to; i += incr)
+    for (var i = from; i < to; i += incr)
         accum += block.fn(i);
     return accum;
 });
 
-Handlebars.registerHelper('nextPage', function(from, to, incr, block) {
+Handlebars.registerHelper('nextPage', function (from, to, incr, block) {
     var accum = '';
-    for(var i = from + 1; i <= to ; i += incr)
+    for (var i = from + 1; i <= to; i += incr)
         accum += block.fn(i);
     return accum;
 });

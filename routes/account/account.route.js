@@ -1,14 +1,15 @@
+const bodyParser = require('body-parser');
+const userModel = require('../../models/user.model');
+
 express = require('express');
 
-userModel = require('../../models/user.model')
+const bcrypt = require('bcrypt');
 
-bcrypt = require('bcrypt');
+const moment = require('moment');
 
-moment = require('moment');
+const passport = require('passport')
 
-passport = require('passport')
-
-auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth')
 
 let router = express.Router();
 
@@ -64,6 +65,7 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', function (req, res, next) {
+    let rq = req.body
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             return next(err);
@@ -91,19 +93,19 @@ router.post('/logout', auth, (req, res, next) => {
 
 
 
-router.get('/profile',auth,(req,res,next )=>{
+router.get('/profile', auth, (req, res, next) => {
     res.end('profile');
 })
 
-router.get('/google',passport.authenticate('google',{
+router.get('/google', passport.authenticate('google', {
     scope: ['profile']
 }));
 
-router.get('/google/abc',passport.authenticate('google'),(req,res,next)=>{
+router.get('/google/abc', passport.authenticate('google'), (req, res, next) => {
     req.logIn(req.user, function (err) {
-        if (err) { 
+        if (err) {
             return next(err);
-         }
+        }
         return res.redirect('/');
     });
 })
@@ -140,7 +142,7 @@ router.post('/profile/update', auth, (req, res, next) => {
 
 });
 router.post('/profile/changepassword', auth, (req, res, nex) => {
-     userModel.singleById(req.body.id).then(result => {
+    userModel.singleById(req.body.id).then(result => {
         let user = result[0];
         console.log('req.body-------', req.body);
         let ret = bcrypt.compareSync(req.body.password, user.password);
@@ -152,10 +154,10 @@ router.post('/profile/changepassword', auth, (req, res, nex) => {
             userModel.update(user).then(result => {
                 console.log('result-------', result);
                 res.redirect(`/account/profile/${req.body.id}`);
-            }).catch(err => {throw err;})
+            }).catch(err => { throw err; })
         } else {
             res.send('failed');
         }
-     }).catch(err => {throw err;})
+    }).catch(err => { throw err; })
 });
 module.exports = router;

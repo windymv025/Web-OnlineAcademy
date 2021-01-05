@@ -25,11 +25,11 @@ module.exports = {
             });
         });
     },
-    singleByUsername: (username) => {
+    singleByEmail: (email) => {
         return new Promise((resolve, reject) => {
             let conn = createConnection();
             conn.connect();
-            let sql = `select * from user where username = '${username}' `
+            let sql = `select * from users where email = ${email} and status = 1 `
             conn.query(sql, (err, value) => {
                 if (err) reject(err);
                 else {

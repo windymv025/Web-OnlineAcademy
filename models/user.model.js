@@ -4,11 +4,12 @@ module.exports = {
     add: (entity) => {
         return db.add('users', entity);
     },
-    singleByUsername: (username) => {
-        return db.singleByUsername(username);
+    singleByEmail: (email) => {
+        let sql = `select * from users where email = '${email}' and status = 1 limit 1 `
+        return db.load(sql);
     },
     singleById: (id) => {
-        return db.load(`select * from users where id=${id}`)
+        return db.load(`select * from users where id=${sid}`)
     },
     search: (filter) => {
         let sql = `select u.* from users u where `

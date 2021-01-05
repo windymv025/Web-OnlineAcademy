@@ -13,7 +13,7 @@ const stringUtil = require('../../utils/StringUtil');
 const userModel = require('../../models/user.model');
 const bcrypt = require('bcrypt');
 const userType = require('../../enum/userType');
-
+const passport = require('passport')
 
 let router = express.Router();
 
@@ -406,5 +406,31 @@ router.post('/student/delete/:id', authAdmin, (req, res, next) => {
     });
 });
 
+
+router.get('/login', (req, res) => {
+    res.render('account/register', {
+        layout: 'my_layout'
+    });
+})
+
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.render('account/login', {
+                layout: false,
+                err_message: info.message
+            })
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/');
+        });
+    })(req, res, next);
+});
 
 module.exports = router;
