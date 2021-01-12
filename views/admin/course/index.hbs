@@ -1,0 +1,146 @@
+<div class="card">
+	<h5 class="card-header d-flex justify-content-between">
+		DANH SÁCH KHÓA HỌC
+		{{!-- <a class="btn btn-outline-success" href="/admin/lecture/add" role="button">
+			<i class="fa fa-plus" aria-hidden="true"></i>
+			Thêm khóa học
+		</a> --}}
+	</h5>
+	{{#if this.empty}}
+	<div class="card-body">
+		<p class="card-text">Không có dữ liệu.</p>
+	</div>
+	{{else}}
+	<div class="card-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">#ID</th>
+					<th scope="col">Tiêu đề</th>
+					<th scope="col">Danh mục</th>
+					<th scope="col">Hình ảnh</th>
+					<th scope="col">Mô tả</th>
+					<th scope="col">Giá bán</th>
+					<th scope="col">Điểm số</th>
+					<th scope="col">Tạo bởi</th>
+					<th scope="col">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each this.courses}}
+				<tr>
+					<th scope="row">{{id}}</th>
+					<td scope="row">{{title}}</td>
+					<td scope="row">{{catName}}</td>
+					<td scope="row" class="course-item">
+						<img src="{{avatar_path}}" class="course-item" alt="...">
+					</td>
+					<td scope="row"><span class="course-item-description">{{short_description}}</span></td>
+					<td>{{price}}</td>
+					<td>{{review_score}}</td>
+					<td>{{createdName}}</td>
+					<td id="del" class="text-right">
+						<button class="btn btn-outline-danger" role="button" data-toggle="modal" data-id="title"
+							data-target="#deleteModal" title="Delete course">
+							<i class="fa fa-trash-o" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation " class="float-right">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.prevPage}}&pageSize=5" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				{{#prevPage 1 this.currentPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/prevPage}}
+				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{
+						this.currentPage }}</a></li>
+				{{#nextPage this.currentPage this.totalPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/nextPage}}
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.nextPage}}&pageSize=5" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#deleteModal">Open Modal</button>
+	<div id="deleteModal" class="modal fade" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Xóa khóa học</h4>
+				</div>
+				<div class="modal-body">
+					<p id="title">Some text in the modal.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default text-danger" data-dismiss="modal">Hủy</button>
+					<button type="button" class="btn btn-default text-success">Đồng ý</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	{{/if}}
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<script>
+	let modal = document.getElementById("myModal");
+	let btn = document.getElementById("myBtn");
+	let title = document.getElementById("title");
+	let span = document.getElementsByClassName("close")[0];
+
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+
+	function showModal(item) {
+		console.log("item", item)
+		title.innerText = item.title
+		document.querySelector("modal.fade").style.display = "block";
+	}
+
+	function hideModal() {
+		modal.style.display = "none";
+	}
+
+	//$(function () {
+	//	$('#deleteModal').modal({
+	//		keyboard: true,
+	//		backdrop: "static",
+	//		show: false,
+	//
+	//				}).on('show', function (item) {
+	//					console.log("get id from row", item)
+	//					let getIdFromRow = $(event.target).closest('tr').data('id');
+	//					$(this).find('#orderDetails').html($('<b> Order Id selected: ' + getIdFromRow + '</b>'))
+	//				});
+	//			});
+	$(document).on("click", ".btn.btn-outline-danger", function () {
+		var myBookId = $(this).data('id');
+		console.log("$(this).data", myBookId)
+		 //$(".modal-body #bookId").val(myBookId); 
+		// As pointed out in comments, 
+		// it is unnecessary to have to manually call the modal.
+		// $('#addBookDialog').modal('show');
+	});
+</script>

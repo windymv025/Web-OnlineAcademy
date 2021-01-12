@@ -1,19 +1,19 @@
 express = require('express');
 let moment = require('moment');
+const { now } = require('moment');
+const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 let authAdmin = require('../../middleware/isAdmin');
-
 let categoryModel = require('../../models/category.model');
+const courseModel = require('../../models/course.model');
+const UserModel = require('../../models/user.model');
 
-let auth = require('../../middleware/auth');
-
-let UserModel = require('../../models/user.model');
-const { now } = require('moment');
+const auth = require('../../middleware/auth');
 const stringUtil = require('../../utils/StringUtil');
 const userModel = require('../../models/user.model');
-const bcrypt = require('bcrypt');
 const userType = require('../../enum/userType');
-const passport = require('passport')
+const StringUtil = require('../../utils/StringUtil');
 
 let router = express.Router();
 
@@ -29,7 +29,7 @@ router.get('/category', authAdmin, async function (req, res) {
     Promise.all([cat, p])
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
-            res.render(`category/index`, {
+            res.render(`admin/category/index`, {
                 categories: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -46,7 +46,7 @@ router.get('/category', authAdmin, async function (req, res) {
 router.get('/category/add', authAdmin, function (req, res) {
     const parents = categoryModel.allParent()
     parents.then(function (item) {
-        res.render('category/add', {
+        res.render('admin/category/add', {
             parents: item
         });
     })
@@ -96,7 +96,7 @@ router.get('/category/:id', authAdmin, function (req, res) {
     categoryModel.byId(req.params.id).then(function (category) {
         const child = categoryModel.childByParent(req.params.id)
         child.then(function (result) {
-            res.render('category/edit', {
+            res.render('admin/category/edit', {
                 category: category[0],
                 child: result,
                 emptyChild: result.length === 0
@@ -161,8 +161,8 @@ router.get('/lecture', authAdmin, (req, res) => {
     Promise.all([users, p])
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
-            res.render('user/lecture/index', {
-                layout: 'main',
+            res.render('admin/user/lecture/index', {
+                layout: false,
                 users: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -177,7 +177,7 @@ router.get('/lecture', authAdmin, (req, res) => {
 });
 
 router.get('/lecture/add', authAdmin, (req, res) => {
-    res.render('user/lecture/add');
+    res.render('admin/user/lecture/add');
 })
 
 router.post('/lecture/add', authAdmin, (req, res) => {
@@ -199,7 +199,7 @@ router.post('/lecture/add', authAdmin, (req, res) => {
         errorMail = 'Vui lòng nhập email đúng định dạng'
     }
     if (errorName != null || errorMail != null) {
-        res.render('user/lecture/add', {
+        res.render('admin/user/lecture/add', {
             errorMail: errorMail,
             errorName: errorName,
         });
@@ -232,7 +232,7 @@ router.get('/lecture/:id', authAdmin, (req, res) => {
 
     let users = UserModel.search(filter);
     users.then(values => {
-        res.render(`user/lecture/edit`, {
+        res.render(`admin/user/lecture/edit`, {
             layout: 'main',
             user: values[0],
         });
@@ -261,7 +261,7 @@ router.post('/lecture/:id', authAdmin, (req, res) => {
     if (errorName != null || errorMail != null) {
         Promise.all([user])
             .then((resultUser) => {
-                res.render(`user/lecture/edit`, {
+                res.render(`admin/user/lecture/edit`, {
                     errorMail: errorMail,
                     errorName: errorName,
                     user: {
@@ -318,7 +318,7 @@ router.get('/student', authAdmin, (req, res) => {
     Promise.all([users, p])
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
-            res.render('user/student/index', {
+            res.render('admin/user/student/index', {
                 layout: 'main',
                 users: result[0],
                 empty: result[0].length === 0,
@@ -344,7 +344,7 @@ router.get('/student/:id', authAdmin, (req, res) => {
 
     let users = UserModel.search(filter);
     users.then(values => {
-        res.render(`user/student/edit`, {
+        res.render(`admin/user/student/edit`, {
             layout: 'main',
             user: values[0],
         });
@@ -373,7 +373,7 @@ router.post('/student/:id', authAdmin, (req, res) => {
     if (errorName != null || errorMail != null) {
         Promise.all([user])
             .then((resultUser) => {
-                res.render(`user/student/edit`, {
+                res.render(`admin/user/student/edit`, {
                     errorMail: errorMail,
                     errorName: errorName,
                     user: {
@@ -408,7 +408,7 @@ router.post('/student/delete/:id', authAdmin, (req, res, next) => {
 
 
 router.get('/login', (req, res) => {
-    res.render('account/register', {
+    res.render('admin/account/register', {
         layout: 'my_layout'
     });
 })
@@ -419,7 +419,7 @@ router.post('/login', function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.render('account/login', {
+            return res.render('admin/account/login', {
                 layout: false,
                 err_message: info.message
             })
@@ -432,5 +432,36 @@ router.post('/login', function (req, res, next) {
         });
     })(req, res, next);
 });
+
+
+router.get('/course', authAdmin, (req, res) => {
+    let pageSize = req.query.pageSize
+    let page = req.query.page - 1
+    const p = courseModel.all(page, pageSize);
+    p.then(function (rows) {
+        let totalPage = Math.ceil(rows.length / pageSize)
+        rows.map(item => {
+            let newPrice = ''
+            if (item.promo_price != null) {
+                newPrice = StringUtil.formatStringCashNoUnit(item.promo_price) + ' (' + StringUtil.formatStringCashNoUnit(item.price) + ')'
+            }else{
+                newPrice = StringUtil.formatStringCashNoUnit(item.price)
+            }
+            item.price = newPrice
+        });
+        res.render('admin/course/index', {
+            courses: rows,
+            empty: rows.length === 0,
+            totalPage: Number(totalPage),
+            currentPage: Number(page) + 1,
+            nextPage: Number(page) + 2 > Number(totalPage) ? Number(totalPage) : Number(page) + 2,
+            prevPage: Number(page) <= 0 ? Number(page) + 1 : Number(page)
+        });
+    }).catch(function (err) {
+        console.error(err);
+        res.send('View error log at server console.');
+    });
+})
+
 
 module.exports = router;

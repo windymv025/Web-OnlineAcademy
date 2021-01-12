@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //App route
 app.get('/', function (req, res, next) {
     if (req.isAuthenticated()) {
-        res.redirect('home');
+        res.redirect('admin');
     } else {
         res.redirect('/account/login')
     }
