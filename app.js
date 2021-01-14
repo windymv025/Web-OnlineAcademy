@@ -22,11 +22,11 @@ var app = express();
 
 viewEngine(app)
 app.set('views', path.join(__dirname, 'views'));
-app.use(require('./middleware/auth.local'));
 session(app)
 passport(app)
 
-var server = app.listen(8000, function () {
+app.use(require('./middleware/auth.local'));
+var server = app.listen(5000, function () {
     var host = server.address().address == '::' ? '127.0.0.1' : server.address().address
     var port = server.address().port
     console.log("Ung dung Node.js dang hoat dong tai dia chi: http://%s:%s", host, port)

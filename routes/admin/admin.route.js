@@ -47,7 +47,8 @@ router.get('/category/add', authAdmin, function (req, res) {
     const parents = categoryModel.allParent()
     parents.then(function (item) {
         res.render('admin/category/add', {
-            parents: item
+            parents: item,
+            prevRoute: req.header('Referer')
         });
     })
 })
@@ -65,7 +66,7 @@ router.post('/category/add', authAdmin, async function (req, res) {
     }
     categoryModel.add(entity)
         .then(() => {
-            res.redirect('/admin/category');
+            res.redirect('/admin/category?page=1&pageSize=5');
         })
         .catch(err => {
             throw err;
@@ -99,7 +100,8 @@ router.get('/category/:id', authAdmin, function (req, res) {
             res.render('admin/category/edit', {
                 category: category[0],
                 child: result,
-                emptyChild: result.length === 0
+                referer: req.header('Referer'),
+                emptyChild: result.length === 0,
             });
         })
     })
@@ -108,7 +110,7 @@ router.get('/category/:id', authAdmin, function (req, res) {
 router.post('/category/:id', authAdmin, (req, res, next) => {
     categoryModel.update(req.body.name, req.params.id)
         .then(() => {
-            res.redirect('/admin/category');
+            res.redirect(`/admin/category/${req.params.id}`);
         })
         .catch(err => {
             throw err;
@@ -117,7 +119,7 @@ router.post('/category/:id', authAdmin, (req, res, next) => {
 
 router.post('/category/delete/:id', authAdmin, (req, res, next) => {
     const ret = categoryModel.del(req.params.id).then(function (result) {
-        res.redirect('/admin/category');
+        res.redirect('/admin/category?page=1&pageSize=5');
     });
 });
 
@@ -162,7 +164,7 @@ router.get('/lecture', authAdmin, (req, res) => {
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
             res.render('admin/user/lecture/index', {
-                layout: false,
+                layout: 'main',
                 users: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -444,7 +446,7 @@ router.get('/course', authAdmin, (req, res) => {
             let newPrice = ''
             if (item.promo_price != null) {
                 newPrice = StringUtil.formatStringCashNoUnit(item.promo_price) + ' (' + StringUtil.formatStringCashNoUnit(item.price) + ')'
-            }else{
+            } else {
                 newPrice = StringUtil.formatStringCashNoUnit(item.price)
             }
             item.price = newPrice
@@ -462,6 +464,12 @@ router.get('/course', authAdmin, (req, res) => {
         res.send('View error log at server console.');
     });
 })
+
+router.post('/course/delete/:id', authAdmin, (req, res, next) => {
+    courseModel.delete(req.params.id).then(function (result) {
+        res.redirect(req.header('Referer'));
+    });
+});
 
 
 module.exports = router;

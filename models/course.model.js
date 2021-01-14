@@ -20,8 +20,9 @@ module.exports = {
         return db.load(sql);
     },
 
-    async del(id) {
-        let result = await db.delete(TBL_COURSE, 'id', parseInt(id))
+    async delete(id) {
+        let sql = `update ${TBL_COURSE} set status = -1 where id = ${parseInt(id)}`
+        let result = await db.load(sql)
         return result;
     },
 

@@ -40,8 +40,8 @@
 					<td>{{review_score}}</td>
 					<td>{{createdName}}</td>
 					<td id="del" class="text-right">
-						<button class="btn btn-outline-danger" role="button" data-toggle="modal" data-id="title"
-							data-target="#deleteModal" title="Delete course">
+						<button class="btn btn-outline-danger" role="button" data-toggle="modal" data-id={{this}}
+							data-target="#deleteModal{{id}}" title="Delete course">
 							<i class="fa fa-trash-o" aria-hidden="true"></i>
 						</button>
 					</td>
@@ -49,6 +49,27 @@
 				{{/each}}
 			</tbody>
 		</table>
+		{{#each this.courses}}
+		<div id="deleteModal{{id}}" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Xóa khóa học </h4>
+					</div>
+					<form action="/admin/course/delete/{{id}}" method="POST">
+						<div class="modal-body d-flex flex-row">
+							<p id="title">Xác nhận xóa khóa học </p>
+							<p style="font-weight: 700; margin-left: 4px">{{title}} ?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default text-danger" data-dismiss="modal">Hủy</button>
+							<button type="submit" class="btn btn-default text-success">Đồng ý</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		{{/each}}
 		<nav aria-label="Page navigation " class="float-right">
 			<ul class="pagination">
 				<li class="page-item">
@@ -72,24 +93,8 @@
 			</ul>
 		</nav>
 	</div>
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#deleteModal">Open Modal</button>
-	<div id="deleteModal" class="modal fade" style="display: none;">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Xóa khóa học</h4>
-				</div>
-				<div class="modal-body">
-					<p id="title">Some text in the modal.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default text-danger" data-dismiss="modal">Hủy</button>
-					<button type="button" class="btn btn-default text-success">Đồng ý</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
+	{{!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#deleteModal">Open
+		Modal</button> --}}
 	{{/if}}
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -102,45 +107,5 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <script>
-	let modal = document.getElementById("myModal");
-	let btn = document.getElementById("myBtn");
-	let title = document.getElementById("title");
-	let span = document.getElementsByClassName("close")[0];
 
-	window.onclick = function (event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
-
-	function showModal(item) {
-		console.log("item", item)
-		title.innerText = item.title
-		document.querySelector("modal.fade").style.display = "block";
-	}
-
-	function hideModal() {
-		modal.style.display = "none";
-	}
-
-	//$(function () {
-	//	$('#deleteModal').modal({
-	//		keyboard: true,
-	//		backdrop: "static",
-	//		show: false,
-	//
-	//				}).on('show', function (item) {
-	//					console.log("get id from row", item)
-	//					let getIdFromRow = $(event.target).closest('tr').data('id');
-	//					$(this).find('#orderDetails').html($('<b> Order Id selected: ' + getIdFromRow + '</b>'))
-	//				});
-	//			});
-	$(document).on("click", ".btn.btn-outline-danger", function () {
-		var myBookId = $(this).data('id');
-		console.log("$(this).data", myBookId)
-		 //$(".modal-body #bookId").val(myBookId); 
-		// As pointed out in comments, 
-		// it is unnecessary to have to manually call the modal.
-		// $('#addBookDialog').modal('show');
-	});
 </script>

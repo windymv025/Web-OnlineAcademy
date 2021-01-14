@@ -2,11 +2,11 @@ var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
-        host: '127.0.0.1',
+        host: 'sql12.freemysqlhosting.net',
         port: 3306,
-        user: 'root',
-        password: '',
-        database: 'public'
+        user: 'sql12386700',
+        password: '9uzA19IxxS',
+        database: 'sql12386700'
     });
 }
 

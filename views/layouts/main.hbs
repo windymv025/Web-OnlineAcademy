@@ -19,148 +19,189 @@
 
 <body style="background-color: #f0f1f4;">
     <!-- Header -->
-    <form id="frmSignout" action="/account/logout" method="POST"></form>
-    <div class="row header-logo " style="background-color: #ffffff">
-        <div class="d-flex justify-content-between" style="background-color: rgb(230, 230, 230);">
-            <!-- col-xl-9 col-lg-12 -->
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
-                <a href="/"><img class="logo" src="/images/logo.png" alt=""></a>
+    <div class="wrapper">
+        {{#if isAuthenticated}}
+        {{#if isAdmin}}
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>
+                    Academy Admin
+                </h3>
             </div>
-            <div class="login-register-icons">
-                <!--col-xl-3 col-lg-12   -->
-                <div class="row mt-4" style="display:flex; justify-content:flex-end;">
-                    {{!-- {{#if isAuthenticated}} --}}
-                    {{!-- <div class="dropdown dropleft">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                            {{user.name}}
-                        </button>
-                        {{#if isAdmin}}
-                        <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                            <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin cá nhân</a>
-                            <a class="dropdown-item" href="/admin/manageCategories">Quản lí chuyên mục</a>
-                            <a class="dropdown-item" href="/admin/manageTag">Quản lí tag</a>
-                            <a class="dropdown-item" href="/admin/manageArticle">Quản lí bài viết</a>
-                            <a class="dropdown-item" href="/admin/manageUser">Quản lí danh sách người dùng</a>
-                            <a class="dropdown-item" href="javascript: $('#frmSignout').submit();">Logout</a>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/admin/category?page=1&pageSize=5">Quản lý danh mục</a>
+                </li>
+                <li>
+                    <a href="/admin/course?page=1&pageSize=5">Quản lý khóa học</a>
+                </li>
+                <li>
+                    <a href="/admin/lecture?page=1&pageSize=5">Quản lý giáo viên</a>
+                </li>
+                <li>
+                    <a href="/admin/student?page=1&pageSize=5">Quản lý học sinh</a>
+                </li>
+            </ul>
+        </nav>
+        {{/if}}
+        {{/if}}
+        <div id="content" {{#if isAuthenticated}} {{#if isAdmin}}class="content-admin" {{else}}
+            class="content-not-admin" {{/if}}{{else}} class="content-not-admin" {{/if}}>
+            <nav class="navbar navbar-default">
+                <div class="row header-logo ">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
+                            <a href="/"><img class="logo" src="/images/logo.png" alt=""></a>
                         </div>
-                        {{else}}
-                        {{#if isEditor}}
-                        <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                            <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin cá nhân</a>
-                            <a class="dropdown-item" href="/editor/manageArticle">Quản lí chuyên mục của mình</a>
-                            <a class="dropdown-item" href="javascript: $('#frmSignout').submit();">Logout</a>
+                        <div class="login-register-icons">
+                            <div class="row mt-4" style="display:flex; justify-content:flex-end;">
+                                {{#if isAuthenticated}}
+                                <div class="dropdown dropleft">
+                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                        data-toggle="dropdown">
+                                        {{user.name}}
+                                    </button>
+                                    {{#if teacher}}
+                                    <div class="dropdown-menu " style="position: absolute; z-index: 2000">
+                                        <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin
+                                            cá nhân</a>
+                                        <a class="dropdown-item" href="/editor/manageArticle">Quản lí chuyên mục
+                                            của
+                                            mình</a>
+                                        <a class="dropdown-item"
+                                            href="javascript: $('#frmSignout').submit();">Logout</a>
+                                    </div>
+                                    {{/if}}
+                                </div>
+                                {{else}}
+                                <div class="d-flex justify-content-center">
+                                    <div class="mr-3">
+                                        <a href="/account/login">
+                                            <button type="button" class="btn btn-success text-uppercase">
+                                                Đăng nhập
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="mr-1">
+                                        <a href="/account/register">
+                                            <button type="button" class="btn btn-success text-uppercase">
+                                                Đăng ký
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                                {{/if}}
+                            </div>
                         </div>
-                        {{else}}
-                        {{#if isWriter}}
-                        <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                            <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin cá nhân</a>
-                            <a class="dropdown-item" href="/writer/upload">Đăng bài viết mới</a>
-                            <a class="dropdown-item" href="/writer/manageArticle">Danh sách bài viết</a>
-                            <a class="dropdown-item" href="javascript: $('#frmSignout').submit();">Logout</a>
-                        </div>
-                        {{else}}
-                        <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                            <a class="dropdown-item" href="/account/profile/{{user.id}}">Profile</a>
-                            <a class="dropdown-item" href="javascript: $('#frmSignout').submit();">Logout</a>
-                        </div>
-                        {{/if}}
-                        {{/if}}
-                        {{/if}}
-                    </div> --}}
-                    {{!-- {{else}} --}}
-                    {{!-- <div class="mr-3">
-                        <a href="/account/login">
-                            <button type="button" class="btn btn-success text-uppercase">
-                                Đăng nhập
-                            </button>
-                        </a>
                     </div>
-                    <div class="mr-1">
-                        <a href="/account/register">
-                            <button type="button" class="btn btn-success text-uppercase">
-                                Đăng ký
-                            </button>
-                        </a>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">Page</a></li>
+                        </ul>
                     </div>
-                    {{/if}} --}}
-
                 </div>
-            </div>
-        </div>
-        <!-- End header -->
-
-        <!-- navigation bar -->
-        <!-- <nav class="navbar navbar-expand-xl navbar-light bg-light sticky-top">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    {{{navbar}}}
-                </ul>
-                <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search"
-                        aria-label="Search">
-                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </nav> -->
-        <!-- end off navigation bar -->
-        <!-- Content area -->
-
-        <div style=" display: block;
+            </nav>
+            <form id="frmSignout" action="/account/logout" method="POST"></form>
+            {{!-- {{/if}} --}}
+            {{!-- {{/if}} --}}
+            {{!-- <div class="row header-logo " style="background-color: #ffffff">
+                <div class="d-flex justify-content-between" style="background-color: rgb(230, 230, 230);">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
+                        <a href="/"><img class="logo" src="/images/logo.png" alt=""></a>
+                    </div>
+                    <div class="login-register-icons">
+                        <div class="row mt-4" style="display:flex; justify-content:flex-end;">
+                            {{#if isAuthenticated}}
+                            <div class="dropdown dropleft">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                    {{user.name}}
+                                </button>
+                                {{#if teacher}}
+                                <div class="dropdown-menu " style="position: absolute; z-index: 2000">
+                                    <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin cá nhân</a>
+                                    <a class="dropdown-item" href="/editor/manageArticle">Quản lí chuyên mục của
+                                        mình</a>
+                                    <a class="dropdown-item" href="javascript: $('#frmSignout').submit();">Logout</a>
+                                </div>
+                                {{/if}}
+                            </div>
+                            {{else}}
+                            <div class="mr-3">
+                                <a href="/account/login">
+                                    <button type="button" class="btn btn-success text-uppercase">
+                                        Đăng nhập
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="mr-1">
+                                <a href="/account/register">
+                                    <button type="button" class="btn btn-success text-uppercase">
+                                        Đăng ký
+                                    </button>
+                                </a>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <!-- End header -->
+            <div style=" display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 70%;">
-            {{{body}}}
-        </div>
+  margin-bottom: 200px;
+  width: 90%;">
+                {{{body}}}
 
-        <!--end of Content -->
-
-        <footer id="myFooter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-3 myCols">
-                        <h5>Get started</h5>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Sign up</a></li>
-                            <li><a href="#">Downloads</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                        <h5>About us</h5>
-                        <ul>
-                            <li><a href="#">Company Information</a></li>
-                            <li><a href="#">Contact us</a></li>
-                            <li><a href="#">Reviews</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                        <h5>Support</h5>
-                        <ul>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Help desk</a></li>
-                            <li><a href="#">Forums</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                        <h5>Legal</h5>
-                        <ul>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul>
+            </div>
+            <footer id="myFooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-3 myCols">
+                            <h5>Get started</h5>
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Sign up</a></li>
+                                <li><a href="#">Downloads</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3 myCols">
+                            <h5>About us</h5>
+                            <ul>
+                                <li><a href="#">Company Information</a></li>
+                                <li><a href="#">Contact us</a></li>
+                                <li><a href="#">Reviews</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3 myCols">
+                            <h5>Support</h5>
+                            <ul>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Help desk</a></li>
+                                <li><a href="#">Forums</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3 myCols">
+                            <h5>Legal</h5>
+                            <ul>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="footer-copyright">
-                <p>© 2020 Copyright Text </p>
-            </div>
-        </footer>
+                <div class="footer-copyright">
+                    <p>© 2020 Copyright Text </p>
+                </div>
+            </footer>
+            <!--end of Content -->
+
+
+
+        </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
         integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
@@ -173,3 +214,203 @@
 </body>
 
 </html>
+<style>
+    @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
+
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
+
+    a,
+    a:hover,
+    a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.1s;
+    }
+
+    .navbar {
+        padding: 15px 10px;
+        background: #fff;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 30px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-btn {
+        box-shadow: none;
+        outline: none !important;
+        border: none;
+    }
+
+    .line {
+        width: 100%;
+        height: 1px;
+        border-bottom: 1px dashed #ddd;
+        margin: 40px 0;
+    }
+
+    /* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+    #sidebar {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 999;
+        background: #F73F52;
+        color: #fff !important;
+        transition: all 0.1s;
+    }
+
+    #sidebar.active {
+        margin-left: -250px;
+    }
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #F73F52;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #F73F52;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+        color: white;
+    }
+
+    #sidebar ul li a:hover {
+        color: #F73F52;
+        background: #fff;
+    }
+
+    #sidebar ul li.active>a,
+    a[aria-expanded="true"] {
+        color: #fff;
+        background: #bd1527;
+    }
+
+    a[data-toggle="collapse"] {
+        position: relative;
+    }
+
+    a[aria-expanded="false"]::before,
+    a[aria-expanded="true"]::before {
+        content: '\e259';
+        display: block;
+        position: absolute;
+        right: 20px;
+        font-family: 'Glyphicons Halflings';
+        font-size: 0.6em;
+    }
+
+    a[aria-expanded="true"]::before {
+        content: '\e260';
+    }
+
+    ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 30px !important;
+        background: #F73F52;
+    }
+
+    ul.CTAs {
+        padding: 20px;
+    }
+
+    ul.CTAs a {
+        text-align: center;
+        font-size: 0.9em !important;
+        display: block;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    a.download {
+        background: #fff;
+        color: #F73F52;
+    }
+
+    a.article,
+    a.article:hover {
+        background: #F73F52 !important;
+        color: #fff !important;
+    }
+
+    /* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+    .content-admin {
+        width: calc(100% - 250px);
+        padding: 0px;
+        min-height: 100vh;
+        transition: all 0.1s;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .content-not-admin {
+        width: 100%;
+        padding: 0px;
+        min-height: 100vh;
+        transition: all 0.1s;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    #content.active {
+        width: 100%;
+    }
+
+    /* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+    @media (max-width: 768px) {
+        #sidebar {
+            margin-left: -250px;
+        }
+
+        #sidebar.active {
+            margin-left: 0;
+        }
+
+        #content {
+            width: 100%;
+        }
+
+        #content.active {
+            width: calc(100% - 250px);
+        }
+
+        #sidebarCollapse span {
+            display: none;
+        }
+    }
+</style>
