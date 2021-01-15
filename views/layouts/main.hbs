@@ -63,13 +63,9 @@
                                     </button>
                                     {{#if teacher}}
                                     <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                                        <a class="dropdown-item" href="/account/profile/{{user.id}}">Thông tin
-                                            cá nhân</a>
-                                        <a class="dropdown-item" href="/editor/manageArticle">Quản lí chuyên mục
-                                            của
-                                            mình</a>
-                                        <a class="dropdown-item"
-                                            href="javascript: $('#frmSignout').submit();">Logout</a>
+                                        <div class="col-sm-3">
+                                            {{> hamberger}}
+                                        </div>
                                     </div>
                                     {{/if}}
                                 </div>
