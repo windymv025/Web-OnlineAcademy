@@ -17,7 +17,8 @@
 
 <body style="background-color: #f0f1f4;">
     <!-- Header -->
-    <div class="row header-logo " style="background-color: #f0f1f4;">
+    <div class="row header-logo "
+        style="display:flex;flex: 1; background-color: #f0f1f4;width: 100%; justify-content: space-between">
         <div class="col-xl-9 col-lg-12">
             <div class="row">
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
@@ -25,22 +26,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-lg-12" class="login-register-icons">
-
-            <div class="row mt-4" style="display:flex; justify-content:flex-end;">
-                <div class="mr-3">
-                </div>
-                <div class="mr-1">
-                    <a href="/account/register">
-                        <button type="button" class="btn btn-success text-uppercase">
-                            Đăng ký
-                            <span>
-                                <img src="/img/dangky.png" alt="">
-                            </span>
-                        </button>
-                    </a>
-                </div>
-            </div>
+        <div class="col-xl-1 col-lg-6 mt-4">
+            <a href="/account/register">
+                <button type="button" class="btn btn-success text-uppercase">
+                    Đăng ký
+                    <span>
+                        <img src="/img/dangky.png" alt="">
+                    </span>
+                </button>
+            </a>
         </div>
     </div>
     <!-- End header -->
@@ -55,7 +49,7 @@
         </div>
         {{/if}}
         <!-- Form -->
-        <form class="formLogin" method="POST" action="/account/login" >
+        <form class="formLogin" method="POST" action="/account/login">
             <h3 class="formh1">Đăng nhập</h3>
             <input class="inputLogin" placeholder="Tài khoản" type="mail" required="" name="email">
             <input class="inputLogin" placeholder="Mật khẩu" type="password" required="" name="password">

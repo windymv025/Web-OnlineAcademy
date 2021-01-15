@@ -440,9 +440,10 @@ router.get('/course', authAdmin, (req, res) => {
     let pageSize = req.query.pageSize
     let page = req.query.page - 1
     const p = courseModel.all(page, pageSize);
-    p.then(function (rows) {
-        let totalPage = Math.ceil(rows.length / pageSize)
-        rows.map(item => {
+    const numTotal = courseModel.count();
+    Promise.all([p, numTotal]).then(function (rows) {
+        let totalPage = Math.ceil(rows[1][0].count / pageSize)
+        rows[0].map(item => {
             let newPrice = ''
             if (item.promo_price != null) {
                 newPrice = StringUtil.formatStringCashNoUnit(item.promo_price) + ' (' + StringUtil.formatStringCashNoUnit(item.price) + ')'
@@ -452,8 +453,8 @@ router.get('/course', authAdmin, (req, res) => {
             item.price = newPrice
         });
         res.render('admin/course/index', {
-            courses: rows,
-            empty: rows.length === 0,
+            courses: rows[0],
+            empty: rows[0].length === 0,
             totalPage: Number(totalPage),
             currentPage: Number(page) + 1,
             nextPage: Number(page) + 2 > Number(totalPage) ? Number(totalPage) : Number(page) + 2,
@@ -470,6 +471,15 @@ router.post('/course/delete/:id', authAdmin, (req, res, next) => {
         res.redirect(req.header('Referer'));
     });
 });
+
+
+router.get(`/course/:id/detail`, authAdmin, (req, res) => {
+    let o = 1
+    res.render('admin/course/detail', {
+        layout: 'main'
+    });
+})
+
 
 
 module.exports = router;

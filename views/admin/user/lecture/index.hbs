@@ -16,6 +16,7 @@
 			<thead>
 				<tr>
 					<th scope="col">#</th>
+					<th scope="col">Avatar</th>
 					<th scope="col">Họ & tên</th>
 					<th scope="col">Email</th>
 					<th scope="col">&nbsp;</th>
@@ -25,6 +26,7 @@
 				{{#each this.users}}
 				<tr>
 					<th scope="row">{{id}}</th>
+					<td>	<img src="{{avatar_path}}" style="width: 100px;" alt="avt"></td>
 					<td>{{name}}</td>
 					<td>{{email}}</td>
 					<td class="text-right">

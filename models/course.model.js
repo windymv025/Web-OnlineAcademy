@@ -19,6 +19,14 @@ module.exports = {
         }
         return db.load(sql);
     },
+    async count() {
+        let sql = `select count(*) count from ${TBL_COURSE} cs join 
+        category c on c.id = cs.category_id and c.status = 1
+        left join users u on u.id = cs.created_by and u.status = 1
+        where cs.status = 1`
+
+        return await db.load(sql);
+    },
 
     async delete(id) {
         let sql = `update ${TBL_COURSE} set status = -1 where id = ${parseInt(id)}`
