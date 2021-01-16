@@ -29,7 +29,7 @@
                 </h3>
             </div>
             <ul class="list-unstyled components">
-                <li class="active">
+                <li >
                     <a href="/admin/category?page=1&pageSize=5">Quản lý danh mục</a>
                 </li>
                 <li>
@@ -56,18 +56,18 @@
                         <div class="login-register-icons">
                             <div class="row mt-4" style="display:flex; justify-content:flex-end;">
                                 {{#if isAuthenticated}}
-                                <div class="dropdown dropleft">
-                                    <button type="button" class="btn btn-success dropdown-toggle"
-                                        data-toggle="dropdown">
+                                <div class="dropdown-account">
+                                    <button class="dropbtn-account">
                                         {{user.name}}
                                     </button>
-                                    {{#if teacher}}
-                                    <div class="dropdown-menu " style="position: absolute; z-index: 2000">
-                                        <div class="col-sm-3">
-                                            {{> hamberger}}
+                                    <div class="dropdown-account-content">
+                                        <div class="d-flex flex-column">
+                                            <a class="dropdown-account-content-item"
+                                                href="/account/profile/{{user.id}}">Profile</a>
+                                            <a class="dropdown-account-content-item"
+                                                href="javascript: $('#frmSignout').submit();">Logout</a>
                                         </div>
                                     </div>
-                                    {{/if}}
                                 </div>
                                 {{else}}
                                 <div class="d-flex justify-content-center">
@@ -210,6 +210,15 @@
 </body>
 
 </html>
+<script>
+    $(document).ready(function () {
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+
+    });
+</script>
 <style>
     @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
@@ -408,5 +417,83 @@
         #sidebarCollapse span {
             display: none;
         }
+    }
+
+
+    .navbar {
+        /* overflow: hidden; */
+        background: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar a {
+        float: left;
+        font-size: 16px;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .dropdown-account {
+        float: right;
+        /* overflow: hidden; */
+    }
+
+    .dropdown-account .dropbtn-account {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: whitesmoke;
+        background-color: #28A745;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font: inherit;
+        margin: 0;
+    }
+
+    .navbar a:hover,
+    .dropdown-account:hover .dropbtn-account {
+        background-color: rgb(83, 182, 83);
+    }
+
+    .dropdown-account-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        width: auto;
+        right: 30px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-account:hover .dropdown-account-content {
+        display: block;
+    }
+
+    .dropdown-account-content-item {
+        padding: 8px 16px;
+    }
+
+    /* Create three equal columns that floats next to each other */
+    .column {
+        float: right;
+        width: auto;
+        padding: 16px;
+        background-color: white;
+        /* height: 250px; */
+    }
+
+    .column a {
+        float: none;
+        color: black;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+
+    .column a:hover {
+        background-color: #ddd;
     }
 </style>

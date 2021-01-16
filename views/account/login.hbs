@@ -46,20 +46,22 @@
         </div>
         {{/if}}
         <!-- Form -->
-        <form class="formLogin" method="POST" action="/account/login">
+        <div  class="formLogin">
             <h3 class="formh1">Đăng nhập</h3>
-            <input class="inputLogin" placeholder="Tài khoản" type="mail" required="" name="email">
-            <input class="inputLogin" placeholder="Mật khẩu" type="password" required="" name="password">
-            <label class="checkboxform"><input id="rememberme" name="rememberme" value="remember" type="checkbox" />
-                &nbsp;Lưu đăng nhập?</label>
-            <a href="#" class="textform">Quên mật khẩu?</a>
-            <button type="submit" class="buttonLogin">Đăng nhập</button>
-            <div>
-                <a type="button" class="buttonGG text-center" href="/account/google">
-                    <i class="fab fa-google">&nbsp;&nbsp;&nbsp;&nbsp;Đăng nhập bằng Google</i>
-                </a>
-            </div>
-        </form>
+            <form method="POST" action="/account/login" style="padding-left: 25px; padding-right: 25px;">
+                <input class="inputLogin" placeholder="Tài khoản" type="mail" required="" name="email">
+                <input class="inputLogin" placeholder="Mật khẩu" type="password" required="" name="password">
+                <label class="checkboxform"><input id="rememberme" name="rememberme" value="remember" type="checkbox" />
+                    &nbsp;Lưu đăng nhập?</label>
+                <a href="#" class="textform">Quên mật khẩu?</a>
+                <button type="submit" class="buttonLogin">Đăng nhập</button>
+                <div>
+                    <a type="button" class="buttonGG text-center" href="/account/google">
+                        <i class="fab fa-google">&nbsp;&nbsp;&nbsp;&nbsp;Đăng nhập bằng Google</i>
+                    </a>
+                </div>
+            </form>
+        </div>
         <!--End  Form -->
     </div>
 

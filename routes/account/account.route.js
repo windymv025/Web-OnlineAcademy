@@ -11,6 +11,7 @@ const passport = require('passport')
 
 const auth = require('../../middleware/auth');
 const userType = require('../../enum/userType');
+const { now } = require('moment');
 
 let router = express.Router();
 
@@ -32,31 +33,34 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-    let saltround = 10;
-    let hash = bcrypt.hashSync(req.body.password, saltround);
-    let dob = moment(req.body.dob, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    let expiry_date = moment().add(7, 'days');
-    expiry_date = moment(expiry_date).format('YYYY-MM-DD');
-
-
-    let entity = {
-        username: req.body.username,
-        password: hash,
-        name: req.body.name,
-        email: req.body.email,
-        dob,
-        expiry_date,
-        role: 'user'
-    }
-
-    userModel.add(entity)
-        .then(() => res.redirect('/account/login'))
-        .catch(err => {
-            console.log(err + "");
+    let userByMail = userModel.singleByEmail(req.body.email.trim().toLowerCase()).then((user) => {
+        if (user.length > 0){
             res.render('account/register', {
-                layout: false
+                layout: false,
+                errors: 'Email đã được đăng ký, vui lòng chọn email khác'
             });
-        })
+        } else {
+            let saltround = 10;
+            let hash = bcrypt.hashSync(req.body.password, saltround);
+            let entity = {
+                name: req.body.name,
+                password: hash,
+                email: req.body.email.trim().toLowerCase(),
+                type: 2,
+                status: 1,
+                created_at: now(),
+            }
+
+            userModel.add(entity)
+                .then(() => res.redirect('/account/login'))
+                .catch(err => {
+                    console.log(err + "");
+                    res.render('account/register', {
+                        layout: false
+                    });
+                })
+        }
+    })
 });
 
 router.get('/login', (req, res) => {

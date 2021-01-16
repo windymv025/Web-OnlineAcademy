@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Academy</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/form-style.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body style="background-color: #f0f1f4;">
+	<!-- Header -->
+	<div class="row header-logo " style="background-color: #f0f1f4;">
+		<div class="col-xl-9 col-lg-12">
+			<div class="row">
+				<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-6">
+					<a href="/"><img class="logo" src="/img/logo.png" alt=""></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-3 col-lg-12" class="login-register-icons">
+			<div class="row mt-4" style="display:flex; justify-content:flex-end;">
+				<div class="mr-3">
+					<a href="/account/login">
+						<button type="button" class="btn btn-success text-uppercase">
+							Đăng nhập
+							<span>
+								<img src="/img/dangnhap.png" alt="">
+							</span>
+						</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End header -->
+	<div>
+		<h6 style="color: red; text-align:center;margin-bottom: -50px; margin-top: 50px">{{this.errors}}</h6>
+	</div>
+	<form class="formLogin" method="POST" action="/account/register">
+		<h3 class="formh1">Đăng ký</h3>
+		<div id="registerForm" style="padding-left: 25px; padding-right: 25px;">
+			<input type="text" class="inputLogin" id="txtName" placeholder="Họ tên" name="name" autocomplete="off">
+			<input type="text" class="inputLogin" id="txtEmail" placeholder="Email" name="email" autocomplete="off">
+			<input class="inputLogin" id="txtPassword" placeholder="Mật khẩu" type="password" autocomplete="off"
+				name="password">
+			<input class="inputLogin" id="txtConfirm" placeholder="Nhập lại mật khẩu" type="password" autocomplete="off"
+				name="confirm">
+			<button class="buttonLogin" type="submit">Đăng ký</button>
+		</div>
+	</form>
+
+
+	<footer id="myFooter">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3 myCols">
+					<h5>Get started</h5>
+					<ul>
+						<li><a href="#">Home</a></li>
+						<li><a href="#">Sign up</a></li>
+						<li><a href="#">Downloads</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>About us</h5>
+					<ul>
+						<li><a href="#">Company Information</a></li>
+						<li><a href="#">Contact us</a></li>
+						<li><a href="#">Reviews</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>Support</h5>
+					<ul>
+						<li><a href="#">FAQ</a></li>
+						<li><a href="#">Help desk</a></li>
+						<li><a href="#">Forums</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>Legal</h5>
+					<ul>
+						<li><a href="#">Terms of Service</a></li>
+						<li><a href="#">Terms of Use</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<p>© 2016 Copyright Text </p>
+		</div>
+	</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<meta charset="UTF-8">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+	$(function () {
+		$('#registerForm').validate({
+			rules: {
+				name: {
+					required: true,
+				},
+				password: {
+					required: true,
+					minlength: 6
+				},
+				confirm: {
+					required: true,
+					equalTo: $('#txtPassword')
+				},
+				email: {
+					required: true,
+					email: true,
+					remote: {
+						url: '/account/is-available'
+					}
+				}
+			},
+			messages: {
+				email: {
+					required: "Vui lòng nhập email",
+					email: 'Email không đúng định dạng'
+				},
+				name: {
+					required: 'Vui lòng nhập tên của bạn',
+					remote: ''
+				},
+				password: {
+					required: 'Vui lòng nhập mật khẩu',
+					minlength: 'Mật khẩu chứa ít nhất 6 kí tự'
+				},
+				confirm: {
+					required: "Vui lòng xác nhận mật khẩu",
+					equalTo: "Mật khẩu không khớp"
+				}
+			},
+			errorElement: 'small',
+			errorClass: 'help-block text-danger',
+			highlight: function (e) {
+				$(e).removeClass('is-valid').addClass('is-invalid');
+			},
+			unhighlight: function (e) {
+				$(e).removeClass('is-invalid').addClass('is-valid');
+			}
+		});
+	});
+</script>
+
+</html>

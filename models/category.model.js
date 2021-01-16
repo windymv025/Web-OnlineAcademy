@@ -43,7 +43,7 @@ module.exports = {
         if (status == 1) {
             sql = sql + ` and status = 1 `
         }
-        sql = sql + ` order by created_at desc desc`
+        sql = sql + ` order by created_at desc`
         return db.load(sql)
     },
 
