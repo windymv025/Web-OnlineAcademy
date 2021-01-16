@@ -1,12 +1,28 @@
 <div class="container">
-    <div class="form-group col-4" style="margin-left: -16px;">
-        <label for="exampleFormControlSelect1">Đình chỉ khóa học ?</label>
-        <select class="form-control" id="exampleFormControlSelect1" name="status">
-            <option value="1">Hoạt động</option>
-            <option value="2">Đình chỉ</option>
-        </select>
-    </div>
-
+    <form method="POST" class="d-flex justify-content-between mr-3 mb-3">
+        <div class="text-muted">
+            {{#ifCond this.detail.status 1}}
+            <button type="button" class="btn btn-danger" onclick="/admin/course/{{this.detail.id}}/delete">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                Xóa khóa học
+            </button>
+            <button type="submit" class="btn btn-warning" formaction="/admin/course/{{this.detail.id}}/block">
+                <i class="fa fa-exclamation-circle"></i>
+                Đình chỉ khóa học
+            </button>
+            {{/ifCond}}
+            {{#ifCond this.detail.status 2}}
+            <button type="button" class="btn btn-danger" onclick="/admin/course/{{this.detail.id}}/delete">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                Xóa khóa học
+            </button>
+            <button type="submit" class="btn btn-success" formaction="/admin/course/{{this.detail.id}}/un-block">
+                <i class="fa fa-check"></i>
+                Bỏ đình chỉ
+            </button>
+            {{/ifCond}}
+        </div>
+    </form>
     <div style="background-image:
            url('{{this.detail.avatar_path}}'); 
     width: 100%; 
@@ -119,3 +135,11 @@
         {{/each}}
     </div>
 </div>
+<script>
+    $('select').on('change', function (e) {
+        console.log(e)
+        var optionSelected = $("option:selected", this);
+        var valueSelected = this.value;
+    ....
+});
+</script>

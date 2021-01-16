@@ -496,11 +496,6 @@ router.get(`/course/:id/detail`, authAdmin, (req, res) => {
     let gv = courseModel.getSubscription(id, 1);
     let student = courseModel.getSubscription(id, 2);
     let review = courseModel.getCourseReview(id)
-    // courseChapter.map((item) => {
-    //     return item.lessons = courseModel.getCourseLesson(id, item.id).then(result => {
-    //         result.map(i => { return i.resources = courseModel.getCourseResource(null, null, i.id) })
-    //     })
-    // })
     Promise.all([courseDetail, courseChapter, gv, student, review]).then((rows) => {
         let detail = rows[0][0];
         let chaps = rows[1];
@@ -555,6 +550,22 @@ router.get(`/course/:id/detail`, authAdmin, (req, res) => {
     });
 })
 
+router.post('/course/:id/block', authAdmin, (req, res) => {
+    courseModel.block(req.params.id).then(function (result) {
+        res.redirect('/admin/course?page=1&pageSize=5');
+    });
+})
 
+router.post('/course/:id/delete', authAdmin, (req, res, next) => {
+    courseModel.delete(req.params.id).then(function (result) {
+        res.redirect('/admin/course?page=1&pageSize=5');
+    });
+});
+
+router.post('/course/:id/un-block', authAdmin, (req, res) => {
+    courseModel.unBlock(req.params.id).then(function (result) {
+        res.redirect('/admin/course?page=1&pageSize=5');
+    });
+})
 
 module.exports = router;
