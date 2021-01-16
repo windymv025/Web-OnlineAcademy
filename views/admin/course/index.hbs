@@ -28,7 +28,7 @@
 			</thead>
 			<tbody>
 				{{#each this.courses}}
-				<tr>
+				<tr class='clickable-row' data-href='course/{{id}}/detail'>
 					<th scope="row">{{id}}</th>
 					<td scope="row">{{title}}</td>
 					<td scope="row">{{catName}}</td>
@@ -107,5 +107,9 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <script>
-
+	$(document).ready(function ($) {
+		$(".clickable-row").click(function () {
+			window.location = $(this).data("href");
+		});
+	});
 </script>

@@ -3,10 +3,8 @@ const TBL_COURSE = 'courses';
 
 module.exports = {
     byId: (id) => {
-        const rows = db.load(`select * from ${TBL_COURSE} where id = ${id}`);
-        if (rows.length === 0)
-            return null;
-        return rows[0];
+        const rows = db.load(`select * from ${TBL_COURSE} where id = ${id} and status = 1 `);
+        return rows;
     },
     all: (page, pageSize, orderBy = 'cs.created_at desc') => {
         let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
@@ -38,5 +36,40 @@ module.exports = {
         const condition = { CatID: entity.CatID };
         delete entity.CatID;
         return db.patch(entity, condition, TBL_COURSE);
+    },
+    async getCourseChapter(courseId) {
+        let sql = `select * from course_chapters where course_id = ${courseId} and status = 1 order by chapter asc `
+        let result = await db.load(sql);
+        return result;
+    },
+    async getCourseLesson(courseId, courseChapter) {
+        let sql = `select * from course_lessons where course_id = ${courseId} and chapter_id = ${courseChapter} and status = 1 order by lesson asc `
+        let result = db.load(sql);
+        return await result;
+    },
+    getCourseResource: (courseId, chapterId, lessonId) => {
+        let sql = `select * from course_resource where status = 1 `
+        if (courseId) {
+            sql = sql + `and course_id = ${courseId} `
+        }
+        if (chapterId) {
+            sql = sql + `and chapter_id =${chapterId} `
+        }
+        if (lessonId) {
+            sql = sql + `and lesson_id =${lessonId} `
+        }
+        sql = sql + ` order by created_at desc `
+        let result = db.load(sql);
+        return result;
+    },
+    async getSubscription(courseId, type) {
+        let sql = `select u.* from subscriptions s join users u on u.id = s.user_id where s.course_id = ${courseId} and s.status = 1 and u.status = 1 and s.type = ${type} and u.type = ${type} order by s.created_at desc `
+        let result = await db.load(sql);
+        return result;
+    },
+    async getCourseReview(courseId) {
+        let sql = `select u.* , r.*  from review r join users u on u.id = r.user_id where r.status =1 and u.status = 1 and r.course_id = ${courseId}  order by r.created_at desc `
+        let result = await db.load(sql);
+        return result;
     }
 }

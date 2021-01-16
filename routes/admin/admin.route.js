@@ -474,9 +474,68 @@ router.post('/course/delete/:id', authAdmin, (req, res, next) => {
 
 
 router.get(`/course/:id/detail`, authAdmin, (req, res) => {
-    let o = 1
-    res.render('admin/course/detail', {
-        layout: 'main'
+    let id = Number(req.params.id)
+    let courseDetail = courseModel.byId(id);
+    let courseChapter = courseModel.getCourseChapter(id);
+    let gv = courseModel.getSubscription(id, 1);
+    let student = courseModel.getSubscription(id, 2);
+    let review = courseModel.getCourseReview(id)
+    // courseChapter.map((item) => {
+    //     return item.lessons = courseModel.getCourseLesson(id, item.id).then(result => {
+    //         result.map(i => { return i.resources = courseModel.getCourseResource(null, null, i.id) })
+    //     })
+    // })
+    Promise.all([courseDetail, courseChapter, gv, student, review]).then((rows) => {
+        let detail = rows[0][0];
+        let chaps = rows[1];
+        let lectures = rows[2][0];
+        let students = rows[3];
+        let reviews = rows[4];
+        let lessonP = []
+        chaps.forEach((item) => {
+            lessonP.push(courseModel.getCourseLesson(id, item.id))
+        })
+        Promise.all(lessonP).then((lesson) => {
+            let resourceP = []
+            let lessons = []
+            lesson.forEach(les => {
+                les.forEach(l => {
+                    lessons.push(l)
+                    resourceP.push(courseModel.getCourseResource(null, null, l.id))
+                })
+            })
+            Promise.all(resourceP).then(re => {
+                lessons.map((le) => {
+                    let res = []
+                    re.forEach(r => {
+                        if (r != null && r[0].lesson_id == le.id) {
+                            res.push(r[0])
+                        }
+                    })
+                    le.resources = res
+                })
+                chaps.map((c) => {
+                    let z = []
+                    lessons.forEach(i => {
+                        if (i.chapter_id == c.id) {
+                            z.push(i)
+                        }
+                    })
+                    return c.lessons = z
+                })
+                res.render('admin/course/detail', {
+                    layout: 'main',
+                    detail: detail,
+                    chapters: chaps,
+                    lectures: lectures,
+                    students: students,
+                    reviews: reviews
+                });
+            })
+        })
+    }).catch(function (err) {
+        console.error(err);
+        res.send('View error log at server console.');
     });
 })
 
