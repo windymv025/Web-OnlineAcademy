@@ -18,18 +18,23 @@ const StringUtil = require('../../utils/StringUtil');
 let router = express.Router();
 
 router.get('/', authAdmin, async function (req, res) {
-    res.redirect('/admin/category?page=1&pageSize=5')
+    if (req.isAuthenticated()) {
+        res.redirect('/admin/category?page=1&pageSize=5')
+    } else {
+        res.redirect('/account/login')
+    }
 })
 
 router.get('/category', authAdmin, async function (req, res) {
     let pageSize = req.query.pageSize
     let page = req.query.page - 1
-    const p = categoryModel.allParent();
-    const cat = categoryModel.allParent(page, pageSize)
+    const p = categoryModel.allParent(null, null, null);
+    const cat = categoryModel.allParent(page, pageSize, null)
     Promise.all([cat, p])
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
             res.render(`admin/category/index`, {
+                layout: 'admin',
                 categories: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -44,9 +49,10 @@ router.get('/category', authAdmin, async function (req, res) {
 })
 
 router.get('/category/add', authAdmin, function (req, res) {
-    const parents = categoryModel.allParent()
+    const parents = categoryModel.allParent(null, null, null)
     parents.then(function (item) {
         res.render('admin/category/add', {
+            layout: 'admin',
             parents: item,
             prevRoute: req.header('Referer')
         });
@@ -98,6 +104,7 @@ router.get('/category/:id', authAdmin, function (req, res) {
         const child = categoryModel.childByParent(req.params.id)
         child.then(function (result) {
             res.render('admin/category/edit', {
+                layout: 'admin',
                 category: category[0],
                 child: result,
                 referer: req.header('Referer'),
@@ -144,7 +151,7 @@ router.get('/lecture', authAdmin, (req, res) => {
     let page = req.query.page - 1
     let filterAll = {
         type: 1,
-        status: 1,
+        not_status: -1,
         orderBy: {
             created_at: 'desc'
         }
@@ -154,7 +161,7 @@ router.get('/lecture', authAdmin, (req, res) => {
         page: page,
         pageSize: pageSize,
         type: 1,
-        status: 1,
+        not_status: -1,
         orderBy: {
             created_at: 'desc'
         }
@@ -164,7 +171,7 @@ router.get('/lecture', authAdmin, (req, res) => {
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
             res.render('admin/user/lecture/index', {
-                layout: 'main',
+                layout: 'admin',
                 users: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -179,7 +186,7 @@ router.get('/lecture', authAdmin, (req, res) => {
 });
 
 router.get('/lecture/add', authAdmin, (req, res) => {
-    res.render('admin/user/lecture/add');
+    res.render('admin/user/lecture/add', { layout: 'admin', });
 })
 
 router.post('/lecture/add', authAdmin, (req, res) => {
@@ -216,7 +223,7 @@ router.post('/lecture/add', authAdmin, (req, res) => {
             password: hash,
             created_at: new Date()
         }
-        userModel.add(entity).then(() => res.redirect('/admin/lecture'))
+        userModel.add(entity).then(() => res.redirect('/admin/lecture?page=1&pageSize=5'))
             .catch(err => {
                 throw err;
             })
@@ -228,15 +235,15 @@ router.get('/lecture/:id', authAdmin, (req, res) => {
     let filter = {
         id: req.params.id,
         type: 1,
-        status: 1,
+        not_status: -1,
         singleResult: true
     }
 
     let users = UserModel.search(filter);
     users.then(values => {
         res.render(`admin/user/lecture/edit`, {
-            layout: 'main',
-            user: values[0],
+            layout: 'admin',
+            lecture: values[0],
         });
     })
 })
@@ -245,6 +252,7 @@ router.post('/lecture/:id', authAdmin, (req, res) => {
     let user = userModel.singleById(req.params.id)
     let name = req.body.name;
     let email = req.body.email;
+    let status = Number(req.body.status);
     let errorName = null;
     let errorMail = null;
     if (name == null) {
@@ -281,9 +289,10 @@ router.post('/lecture/:id', authAdmin, (req, res) => {
             id: req.params.id,
             name,
             email,
+            status,
             updated_at: new Date()
         }
-        userModel.update(entity).then(() => res.redirect(`/admin/lecture`))
+        userModel.update(entity).then(() => res.redirect('/admin/lecture?page=1&pageSize=5'))
             .catch(err => {
                 throw err;
             })
@@ -292,7 +301,7 @@ router.post('/lecture/:id', authAdmin, (req, res) => {
 
 router.post('/lecture/delete/:id', authAdmin, (req, res, next) => {
     userModel.delete(req.params.id).then(function (result) {
-        res.redirect('/admin/lecture');
+        res.redirect('/admin/lecture?page=1&pageSize=5');
     });
 });
 
@@ -301,7 +310,7 @@ router.get('/student', authAdmin, (req, res) => {
     let page = req.query.page - 1
     let filterAll = {
         type: 2,
-        status: 1,
+        not_status: -1,
         orderBy: {
             created_at: 'desc'
         }
@@ -311,7 +320,7 @@ router.get('/student', authAdmin, (req, res) => {
         page: page,
         pageSize: pageSize,
         type: 2,
-        status: 1,
+        not_status: -1,
         orderBy: {
             created_at: 'desc'
         }
@@ -321,7 +330,7 @@ router.get('/student', authAdmin, (req, res) => {
         .then((result) => {
             let totalPage = Math.ceil(result[1].length / pageSize)
             res.render('admin/user/student/index', {
-                layout: 'main',
+                layout: 'admin',
                 users: result[0],
                 empty: result[0].length === 0,
                 totalPage: Number(totalPage),
@@ -357,6 +366,7 @@ router.post('/student/:id', authAdmin, (req, res) => {
     let user = userModel.singleById(req.params.id)
     let name = req.body.name;
     let email = req.body.email;
+    let status = Number(req.body.status);
     let errorName = null;
     let errorMail = null;
     if (name == null) {
@@ -393,9 +403,10 @@ router.post('/student/:id', authAdmin, (req, res) => {
             id: req.params.id,
             name,
             email,
+            status,
             updated_at: new Date()
         }
-        userModel.update(entity).then(() => res.redirect(`/admin/student`))
+        userModel.update(entity).then(() => res.redirect(`/admin/student?page=1&pageSize=5`))
             .catch(err => {
                 throw err;
             })
@@ -404,14 +415,14 @@ router.post('/student/:id', authAdmin, (req, res) => {
 
 router.post('/student/delete/:id', authAdmin, (req, res, next) => {
     userModel.delete(req.params.id).then(function (result) {
-        res.redirect('/admin/student');
+        res.redirect('/admin/student?page=1&pageSize=5');
     });
 });
 
 
 router.get('/login', (req, res) => {
     res.render('admin/account/register', {
-        layout: 'my_layout'
+        layout: 'admin',
     });
 })
 
@@ -429,6 +440,10 @@ router.post('/login', function (req, res, next) {
         req.logIn(user, function (err) {
             if (err) {
                 return next(err);
+            }
+            if (Number(user.type) !== userType.ADMIN()) {
+                res.redirect('/admin');
+                return;
             }
             return res.redirect('/');
         });
@@ -453,6 +468,7 @@ router.get('/course', authAdmin, (req, res) => {
             item.price = newPrice
         });
         res.render('admin/course/index', {
+            layout: 'admin',
             courses: rows[0],
             empty: rows[0].length === 0,
             totalPage: Number(totalPage),
@@ -524,7 +540,7 @@ router.get(`/course/:id/detail`, authAdmin, (req, res) => {
                     return c.lessons = z
                 })
                 res.render('admin/course/detail', {
-                    layout: 'main',
+                    layout: 'admin',
                     detail: detail,
                     chapters: chaps,
                     lectures: lectures,

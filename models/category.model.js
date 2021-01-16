@@ -2,16 +2,24 @@ var db = require('../utils/db');
 const TBL_CATEGORIES = 'category';
 
 module.exports = {
-    allchild: (page, pageSize) => {
-        let sql = `select * from category where parent_category_id is not null  and status = 1 order by created_at desc`
+    allchild: (page, pageSize, status = 1) => {
+        let sql = `select * from category where parent_category_id is not null `
+        if (status == 1) {
+            sql = sql + ` and status = 1 `
+        }
+        sql = sql` order by created_at desc`
         if (page != null) {
             let offset = Number(page) * Number(pageSize)
             sql = sql + ` limit ${pageSize} offset ${offset} `
         }
         return db.load(sql)
     },
-    allParent: (page, pageSize) => {
-        let sql = `select * from category where parent_category_id is null  and status = 1 order by created_at desc `
+    allParent: (page, pageSize, status = 1) => {
+        let sql = `select * from category where parent_category_id is null  `
+        if (status == 1) {
+            sql = sql + ` and status = 1 `
+        }
+        sql = sql + ` order by status desc,  created_at desc`
         if (page != null) {
             let offset = Number(page) * Number(pageSize)
             sql = sql + ` limit ${pageSize} offset ${offset} `
@@ -30,8 +38,13 @@ module.exports = {
     all() {
         return db.load(`select * from ${TBL_CATEGORIES}`);
     },
-    childByParent: (id) => {
-        return db.load(`select * from category where parent_category_id  = ${id}  and status = 1 order by created_at desc`)
+    childByParent: (id, status = 1) => {
+        let sql = `select * from category where parent_category_id  = ${id}    `
+        if (status == 1) {
+            sql = sql + ` and status = 1 `
+        }
+        sql = sql + ` order by created_at desc desc`
+        return db.load(sql)
     },
 
     allWithDetails() {
@@ -65,5 +78,9 @@ module.exports = {
         const condition = { CatID: entity.CatID };
         delete entity.CatID;
         return db.patch(entity, condition, TBL_CATEGORIES);
-    }
+    },
+    async childByParentId(id) {
+        let result = await db.load(`select * from category where parent_category_id  = ${id}  and status = 1 order by created_at desc`)
+        return result
+    },
 }

@@ -9,7 +9,8 @@ const moment = require('moment');
 
 const passport = require('passport')
 
-const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth');
+const userType = require('../../enum/userType');
 
 let router = express.Router();
 

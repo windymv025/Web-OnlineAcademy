@@ -9,13 +9,17 @@ module.exports = {
         return db.load(sql);
     },
     singleById: (id) => {
-        return db.load(`select * from users where id=${sid}`)
+        return db.load(`select * from users where id=${id}`)
     },
     search: (filter) => {
         let sql = `select u.* from users u where `
         Object.keys(filter).forEach((item, index) => {
             if (item != 'page' && item != 'pageSize' && item != 'orderBy' && item != 'singleResult') {
-                sql = sql + ` u.${item} = ${filter[item]} and`
+                if (item == 'not_status') {
+                    sql = sql + ` u.status !=  ${filter[item]} and `
+                } else {
+                    sql = sql + ` u.${item} = ${filter[item]} and`
+                }
             }
         })
         sql = sql + ' 1 = 1 '

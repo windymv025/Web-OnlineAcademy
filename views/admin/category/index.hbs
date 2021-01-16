@@ -16,7 +16,8 @@
 			<thead>
 				<tr>
 					<th scope="col">#</th>
-					<th scope="col">Category</th>
+					<th scope="col">Tiêu đề</th>
+					<th scope="col">Trạng thái</th>
 					<th scope="col">&nbsp;</th>
 				</tr>
 			</thead>
@@ -25,6 +26,14 @@
 				<tr>
 					<th scope="row">{{id}}</th>
 					<td>{{name}}</td>
+					<td>
+						{{#ifCond status 1}}
+						<p class="text-success">Hoạt động</p>
+						{{/ifCond}}
+						{{#ifCond status -1}}
+						<p class="text-danger">Đã xóa</p>
+						{{/ifCond}}
+					</td>
 					<td class="text-right">
 						<a class="btn btn-sm btn-primary" href="/admin/category/{{id}}" role="button"
 							title="Edit Category">
@@ -43,11 +52,12 @@
 					</a>
 				</li>
 				{{#prevPage 1 this.currentPage 1}}
-					<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
 				{{/prevPage}}
-				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{ this.currentPage }}</a></li>
+				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{
+						this.currentPage }}</a></li>
 				{{#nextPage this.currentPage this.totalPage 1}}
-					<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
 				{{/nextPage}}
 				<li class="page-item">
 					<a class="page-link" href="?page={{this.nextPage}}&pageSize=5" aria-label="Next">

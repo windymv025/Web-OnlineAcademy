@@ -11,11 +11,14 @@ var Handlebars = require('handlebars');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin/admin.route')
+var homeRouter = require('./routes/user/home.route')
 var accountRouter = require('./routes/account/account.route')
 var categoryRouter = require('./routes/category/category.route')
 const viewEngine = require('./middleware/viewEngine')
 const session = require('./middleware/session')
-const passport = require('./middleware/passport')
+const passport = require('./middleware/passport');
+const userType = require('./enum/userType');
+const categoryModel = require('./models/category.model');
 
 var app = express();
 
@@ -39,19 +42,45 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //App route
+
 app.get('/', function (req, res, next) {
+    categoryModel.allParent().then((pC) => {
+        let pCat = pC
+        let pChildCat = []
+        pCat.forEach(e => {
+            pChildCat.push(categoryModel.childByParentId(e.id))
+        });
+
+        Promise.all(pChildCat).then((cat) => {
+            if (cat) {
+                pCat.map((p, index) => {
+                    let childs = []
+                    cat[index].forEach(e => {
+                        if (e.parent_category_id = p.id) {
+                            childs.push(e)
+                        }
+                    })
+                    return p.childs = childs;
+                })
+            }
+            app.locals.cats = pCat
+        })
+    })
     if (req.isAuthenticated()) {
-        res.redirect('admin');
+        if (Number(req.user.type) == userType.ADMIN()) {
+            res.redirect('admin');
+        } else {
+            res.redirect('home');
+        }
     } else {
-        res.redirect('/account/login')
+        res.redirect('home')
     }
 });
+
 app.use('/admin', adminRouter);
+app.use('/home', homeRouter);
 app.use('/account', accountRouter);
 app.use('/category', categoryRouter);
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

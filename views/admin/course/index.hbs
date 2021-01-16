@@ -23,22 +23,31 @@
 					<th scope="col">Giá bán</th>
 					<th scope="col">Điểm số</th>
 					<th scope="col">Tạo bởi</th>
+					<th scope="col">Trạng thái</th>
 					<th scope="col">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
 				{{#each this.courses}}
-				<tr class='clickable-row' data-href='course/{{id}}/detail'>
-					<th scope="row">{{id}}</th>
-					<td scope="row">{{title}}</td>
+				<tr>
+					<th scope="row"  class='clickable-row' data-href='course/{{id}}/detail'>{{id}}</th>
+					<td scope="row"  class='clickable-row' data-href='course/{{id}}/detail'>{{title}}</td>
 					<td scope="row">{{catName}}</td>
-					<td scope="row" class="course-item">
+					<td scope="row" class="course-item clickable-row" data-href='course/{{id}}/detail'>
 						<img src="{{avatar_path}}" class="course-item" alt="...">
 					</td>
-					<td scope="row"><span class="course-item-description">{{short_description}}</span></td>
-					<td>{{price}}</td>
-					<td>{{review_score}}</td>
-					<td>{{createdName}}</td>
+					<td scope="row" class='clickable-row' data-href='course/{{id}}/detail'><span class="course-item-description">{{short_description}}</span></td>
+					<td class='clickable-row' data-href='course/{{id}}/detail'>{{price}}</td>
+					<td class='clickable-row' data-href='course/{{id}}/detail'>{{review_score}}</td>
+					<td >{{createdName}}</td>
+						<td>
+						{{#ifCond status 1}}
+						<p class="text-success">Hoạt động</p>
+						{{/ifCond}}
+						{{#ifCond status -1}}
+						<p class="text-danger">Đã xóa</p>
+						{{/ifCond}}
+					</td>
 					<td id="del" class="text-right">
 						<button class="btn btn-outline-danger" role="button" data-toggle="modal" data-id={{this}}
 							data-target="#deleteModal{{id}}" title="Delete course">

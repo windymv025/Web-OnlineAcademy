@@ -1,24 +1,84 @@
 /* xử lí menu */
-.dropdown {
-  position: relative;
-  display: inline-block;
+* {
+  box-sizing: border-box;
+}
+.navbar {
+  /* overflow: hidden; */
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  /* overflow: hidden; */
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: ghostwhite;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
+  background-color: white;
+  width: 500px;
+  left: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
-  background: #ffffff;
-  border-radius: 5px;
 }
 
-.dropdown-content .dropdown-item:hover {
-  background: rgb(205, 230, 213);
+/* Create three equal columns that floats next to each other */
+.column {
+  float: center;
+  width: 33.33%;
+  padding: 16px;
+  background-color: white;
+  /* height: 250px; */
+}
+
+.column a {
+  float: none;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.column a:hover {
+  background-color: #ddd;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .CategoryTitle {
@@ -376,6 +436,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
 /* Popup container */
 .popup {
   position: relative;
@@ -420,19 +481,30 @@
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity:1 ;}
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Styles go here */
 
-body, html {
-  height:100%;
+body,
+html {
+  height: 100%;
 }
 
 /*
@@ -448,8 +520,7 @@ body, html {
     transition: all 0.25s ease-out;
   }
 
-  .row-offcanvas-left
-  .sidebar-offcanvas {
+  .row-offcanvas-left .sidebar-offcanvas {
     left: -33%;
   }
 
@@ -471,8 +542,7 @@ body, html {
  * --------------------------------------------------
  */
 @media screen and (max-width: 34em) {
-  .row-offcanvas-left
-  .sidebar-offcanvas {
+  .row-offcanvas-left .sidebar-offcanvas {
     left: -45%;
   }
 
@@ -487,26 +557,26 @@ body, html {
 }
 
 .card {
-    overflow:hidden;
+  overflow: hidden;
 }
 
 .card-body .rotate {
-    z-index: 8;
-    float: right;
-    height: 100%;
+  z-index: 8;
+  float: right;
+  height: 100%;
 }
 
 .card-body .rotate i {
-    color: rgba(20, 20, 20, 0.15);
-    position: absolute;
-    left: 0;
-    left: auto;
-    right: -10px;
-    bottom: 0;
-    display: block;
-    -webkit-transform: rotate(-44deg);
-    -moz-transform: rotate(-44deg);
-    -o-transform: rotate(-44deg);
-    -ms-transform: rotate(-44deg);
-    transform: rotate(-44deg);
+  color: rgba(20, 20, 20, 0.15);
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
 }
