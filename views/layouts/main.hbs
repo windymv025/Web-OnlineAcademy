@@ -82,15 +82,23 @@
                             </div>
                         </div>
                     </ul>
-                    <div class="d-flex flex-row float-right ml-16">
-                        <div class="mr-3">
-                            <a href="/account/login">
+                    {{!-- <div class="col-6">
+                        <div class="search">
+                            <input type="text" placeholder="Search">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div> --}}
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <div class="d-flex flex-row float-right" style="margin-left: 30px">
+                       <a href="/account/login">
                                 <button type="button" class="btn btn-success text-uppercase">
                                     Đăng nhập
                                 </button>
                             </a>
-                        </div>
-                        <div class="mr-1">
+                        <div style="margin-left: -16px;">
                             <a href="/account/register">
                                 <button type="button" class="btn btn-success text-uppercase">
                                     Đăng ký
