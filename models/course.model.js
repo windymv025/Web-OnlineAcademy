@@ -17,7 +17,7 @@ module.exports = {
         }
         return db.load(sql);
     },
-    
+
     async count() {
         let sql = `select count(*) count from ${TBL_COURSE} cs join 
         category c on c.id = cs.category_id and c.status != -1
@@ -139,19 +139,23 @@ module.exports = {
     addReview: (content, id, uId) => {
         let sql = `insert into review(course_id, user_id, content, created_at, status) values(${id},${uId}, '${content}', now(), 1)`
         return db.load(sql)
-    }
-}
-
-module.exports.searchByTitle = async (keyword)=>{
-// (keyword ,page, pageSize, orderBy = 'cs.created_at asc') => {
-        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
-        category c on c.id = cs.category_id and c.status = 1
-        left join users u on u.id = cs.created_by and u.status = 1
-        where cs.status = 1 and match(title) against('${keyword}' with query expansion)`
+    },
+    async searchByTitle(keyword, page, pageSize) {
+        // (keyword ,page, pageSize, orderBy = 'cs.created_at asc') => {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join category c on c.id = cs.category_id and c.status = 1
+                left join users u on u.id = cs.created_by and u.status = 1
+                where cs.status = 1 and match(title) against('${keyword}' with query expansion) order by cs.created_at desc `
+        if (page != null) {
+            let offset = Number(page) * Number(pageSize)
+            sql = sql + ` limit ${pageSize} offset ${offset} `
+        }
         // if (page != null) {
         //     let offset = Number(page) * Number(pageSize)
         //     sql = sql + ` limit ${pageSize} offset ${offset} `
         // }
         return await db.load(sql);
-    // },
+        // },
+    }
 }
+
+// module.exports.

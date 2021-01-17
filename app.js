@@ -9,8 +9,6 @@ var morgan = require("morgan");
 var Handlebars = require("handlebars");
 
 // <<<<<<< HEAD
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin/admin.route')
 var homeRouter = require('./routes/user/home.route')
 var courseRouter = require('./routes/course/course.route')

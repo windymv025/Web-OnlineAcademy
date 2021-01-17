@@ -49,9 +49,10 @@
                             </div>
                         </div>
                     </ul>
-                    <form class="form-inline mr-4">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <form method="GET" action="/course/search?page=1&pageSize=10" class="form-inline mr-4">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" name="keyword"
+                            aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
                     </form>
                     {{/if}}
                     {{#if student}}
@@ -78,9 +79,10 @@
                             </div>
                         </div>
                     </ul>
-                    <form class="form-inline mr-4">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <form method="GET" action="/course/search?page=1&pageSize=10" class="form-inline mr-4">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" name="keyword"
+                            aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
                     </form>
                     {{/if}}
                     <div class="dropdown-account">
@@ -117,9 +119,10 @@
                             </div>
                         </div>
                     </ul>
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <form method="GET" action="/course/search?page=1&pageSize=10" class="form-inline mr-4">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" name="keyword"
+                            aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
                     </form>
                     <div class="d-flex flex-row float-right" style="margin-left: 30px">
                         <a href="/account/login">
@@ -237,7 +240,7 @@
     a,
     a:hover,
     a:focus {
-        color: inherit;
+        color: rgba(29, 29, 29, 0.8);
         text-decoration: none;
         transition: all 0.1s;
     }
@@ -285,7 +288,7 @@
     }
 
     #footer a {
-        color: #d2d1d1;
+        color: #d2d1d14f;
         text-decoration: none;
     }
 
@@ -331,8 +334,7 @@
         margin: 0;
     }
 
-    .navbar a:hover,
-    .dropdown-account:hover .dropbtn-account {
+    .navbar .dropdown-account:hover .dropbtn-account {
         background-color: rgb(83, 182, 83);
     }
 
