@@ -169,4 +169,14 @@ router.get(`/:id/detail`, (req, res) => {
     });
 })
 
+
+
+router.post(`/:id/review`, auth, (req, res) => {
+    let userId = req.user.id
+    let content = req.body.content
+    courseModel.addReview(content, req.params.id, userId).then(()=>{
+        res.redirect(req.header('Referer'))
+    })
+})
+
 module.exports = router;

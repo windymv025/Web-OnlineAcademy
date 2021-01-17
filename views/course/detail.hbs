@@ -116,11 +116,11 @@
     <div class="card mb-4" id="forms">
         <div class="card-header">Đánh giá</div>
         <div class="card-body">
-            <form>
+            <form action="/course/{{this.detail.id}}/review" method="POST">
                 <fieldset>
                     <div class="form-group">
                         <label for="exampleInputEmail">Nhập đánh giá của bạn</label>
-                        <input class="form-control " id="exampleInputEmail" type="text"
+                        <input class="form-control " id="exampleInputEmail" type="text" name="content"
                             placeholder="Nhập đánh giá của bạn">
                     </div>
                     <button class="btn btn-primary" style="float:right" type="submit">Gửi</button>

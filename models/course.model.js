@@ -135,4 +135,8 @@ module.exports = {
 
         return await db.load(sql);
     },
+    addReview: (content, id, uId) => {
+        let sql = `insert into review(course_id, user_id, content, created_at, status) values(${id},${uId}, '${content}', now(), 1)`
+        return db.load(sql)
+    }
 }
