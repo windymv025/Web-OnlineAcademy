@@ -12,8 +12,8 @@
 
     .formh1 {
         box-sizing: border-box;
-        padding: 20px;
-        background-color: #28a745;
+        padding: 18px;
+        background-color: #1E90FF;
         color: white;
         text-align: center;
     }
@@ -24,13 +24,13 @@
         display: block;
         border: none;
         padding: 10px 0;
-        border-bottom: solid 1px #28a745;
+        border-bottom: solid 1px #1E90FF;
         transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #28a745 4%);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #1E90FF 4%);
         background-position: -450px 0;
         background-size: 450px 100%;
         background-repeat: no-repeat;
-        color: #28a745;
+        color: #1E90FF;
     }
 
     input:focus,
@@ -42,7 +42,7 @@
 
     input:focus::-webkit-input-placeholder,
     input:valid::-webkit-input-placeholder {
-        color: #28a745;
+        color: #1E90FF;
         font-size: 11px;
         transform: translateY(-20px);
         visibility: visible !important;
@@ -50,7 +50,19 @@
 
     .buttonLogin {
         border: none;
-        background: #28a745;
+        background: #1E90FF;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 6px;
+        width: 450px;
+        color: white;
+        margin-left: 25px;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .buttonChangePass {
+        border: none;
+        background: #cf1d4a;
         cursor: pointer;
         border-radius: 3px;
         padding: 6px;
@@ -66,24 +78,24 @@
     }
 
     .textform {
-        color: #28a745;
+        color: #1E90FF;
         margin: 20px 25px;
         display: block;
     }
 
     .checkboxform {
-        color: #28a745;
+        color: #1E90FF;
         margin: 20px 25px;
         display: block;
     }
 
     a:hover {
-        color: #28a745;
+        color: #1E90FF;
     }
 
     .textcolor {
         margin: 20px 25px;
-        color: #28a745;
+        color: black;
     }
 
     /*end login*/
@@ -123,12 +135,12 @@
 </style>
 <div>
     <form class="formLogin" method="POST" action="/account/profile/update">
-        <h1 class="formh1">Cập nhật</h1>
+        <h4 class="formh1">Thông tin cá nhân</h4>
         <input class="inputLogin" name="id" type="hidden" value="{{this.user.id}}" />
         <input class="inputLogin" name="name" type="text" value="{{this.user.name}}">
         <input class="inputLogin" name="email" type="email" value="{{this.user.email}}">
         <input class="inputLogin" type="date" name="dob" value="{{this.user.dob}}">
-        <button class="buttonLogin" style="margin-bottom: 20px" type="button" data-toggle="modal"
+        <button class="buttonChangePass" style="margin-bottom: 20px" type="button" data-toggle="modal"
             data-target="#changpassword">Đổi mật khẩu</button>
         <button class="buttonLogin" type="submit">Cập nhật</button>
     </form>

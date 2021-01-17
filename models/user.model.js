@@ -5,7 +5,7 @@ module.exports = {
         return db.add('users', entity);
     },
     singleByEmail: (email) => {
-        let sql = `select * from users where email = '${email}' and status = 1 limit 1 `
+        let sql = `select * from users where email = '${email}' limit 1 `
         return db.load(sql);
     },
     singleById: (id) => {

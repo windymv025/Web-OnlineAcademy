@@ -16,7 +16,7 @@ module.exports = (app) => {
             userModel.singleByEmail(email)
                 .then(rows => {
                     if (rows.length === 0) {
-                        return done(null, false, { message: 'Email hoặc mật khẩu không đúng' });
+                        return done(null, false, { message: 'Email không tồn tại' });
                     }
                     let user = rows[0];
                     let ret = bcrypt.compareSync(password, user.password);
@@ -24,7 +24,7 @@ module.exports = (app) => {
                         if (user.status == 1) {
                             return done(null, user);
                         }
-                        return done(null, false, { message: 'User is block' });
+                        return done(null, false, { message: 'Tài khoản bị khóa' });
                     }
                     return done(null, false, { message: 'Email hoặc mật khẩu không đúng' })
                 })

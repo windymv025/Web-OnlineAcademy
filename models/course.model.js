@@ -98,4 +98,41 @@ module.exports = {
 
         return db.load(sql);
     },
+
+    async getCourseWatchList(id) {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
+    category c on c.id = cs.category_id and c.status = 1
+    left join users u on u.id = cs.created_by join watch_list w on w.course_id = cs.id and w.user_id = ${id} and w.status = 1 
+    where cs.status = 1 order by w.created_at desc  `
+        // let sql = `select c.* from courses c join watch_list w on w.course_id = c.id and w.user_id = ${id} and w.status =1 order by w.created_at desc `
+        return db.load(sql);
+    },
+    async getCourseSubscriptions(id) {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
+    category c on c.id = cs.category_id and c.status = 1
+    left join users u on u.id = cs.created_by join subscriptions w on w.course_id = cs.id and w.user_id = ${id} and w.status = 1 
+    where cs.status = 1 order by w.created_at desc  `
+        // let sql = `select c.* from courses c join watch_list w on w.course_id = c.id and w.user_id = ${id} and w.status =1 order by w.created_at desc `
+        return db.load(sql);
+    },
+
+    allActive: (page, pageSize, orderBy = 'cs.created_at desc') => {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
+        category c on c.id = cs.category_id and c.status = 1
+        left join users u on u.id = cs.created_by and u.status = 1
+        where cs.status = 1 order by ${orderBy}  `
+        if (page != null) {
+            let offset = Number(page) * Number(pageSize)
+            sql = sql + ` limit ${pageSize} offset ${offset} `
+        }
+        return db.load(sql);
+    },
+    async countActive() {
+        let sql = `select count(*) count from ${TBL_COURSE} cs join 
+        category c on c.id = cs.category_id and c.status = 1
+        left join users u on u.id = cs.created_by and u.status = 1
+        where cs.status = 1`
+
+        return await db.load(sql);
+    },
 }

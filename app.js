@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin/admin.route')
 var homeRouter = require('./routes/user/home.route')
+var courseRouter = require('./routes/course/course.route')
 var accountRouter = require('./routes/account/account.route')
 var categoryRouter = require('./routes/category/category.route')
 const viewEngine = require('./middleware/viewEngine')
@@ -78,6 +79,7 @@ app.get('/', function (req, res, next) {
 });
 
 app.use('/admin', adminRouter);
+app.use('/course', courseRouter);
 app.use('/home', homeRouter);
 app.use('/account', accountRouter);
 app.use('/category', categoryRouter);

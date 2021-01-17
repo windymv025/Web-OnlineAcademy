@@ -119,10 +119,11 @@ router.get('/profile/:id', auth, (req, res, next) => {
     let user = userModel.singleById(id);
     user.then(result => {
         console.log('reuslt-------', result[0]);
-        result[0].dob = moment(result[0].dob).format();
+        let r = result[0];
+        r.dob = moment(new Date(result[0].date_of_birth)).format("YYYY-MM-DD");
         res.render('account/profile', {
             layout: 'main',
-            user: result[0]
+            user: r
         });
     }).catch(err => {
         throw err;
@@ -133,7 +134,7 @@ router.post('/profile/update', auth, (req, res, next) => {
     userModel.singleById(req.body.id).then(result => {
         let user = result[0];
         if (req.body.dob !== '') {
-            user.dob = req.body.dob;
+            user.date_of_birth = req.body.dob;
         }
         user.name = req.body.name;
         user.email = req.body.email;

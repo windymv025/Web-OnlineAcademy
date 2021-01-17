@@ -27,43 +27,10 @@
                         <a href="/"><img class="logo" src="/images/logo.png" alt=""></a>
                     </div>
                     {{#if isAuthenticated}}
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        {{user.name}}
-                    </button>
-                    {{#if teacher}}
-
-                    {{/if}}
-                    {{#if student}}
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item mx-2">
-                                <a class="nav-link active" href="index.html">Home</a>
-                            </li>
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" href="services.html">Services</a>
-                            </li>
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" href="contact.html">Contact</a>
-                            </li>
-                            <li class="nav-item ml-2 dropdown"><a class="nav-link dropdown-toggle pr-0"
-                                    id="navbarDropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">Pages</a>
-                                <div class="dropdown-menu dropdown-menu-right mt-lg-4"
-                                    aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item text-small" href="index.html">Home</a><a
-                                        class="dropdown-item text-small" href="services.html">Services</a><a
-                                        class="dropdown-item text-small" href="contact.html">Contact
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    {{/if}}
-                    {{else}}
+                    {{#if lecture}}
                     <ul class="d-flex flex-row mt-2 flex-fill">
-                        <a class="nav-link active" href="index.html">Home</a>
-                        <a class="nav-link" href="services.html">Sản phẩm</a>
-                        <a class="nav-link" href="contact.html">Khóa học</a>
+                        <a class="nav-link active" href="/">Trang chủ</a>
+                        <a class="nav-link" href="/course/user/{{user.id}}/post">Khóa học của tôi</a>
                         <div class="dropdown">
                             <button class="dropbtn">Danh mục
                                 <i class="fa fa-caret-down"></i>
@@ -82,22 +49,84 @@
                             </div>
                         </div>
                     </ul>
-                    {{!-- <div class="col-6">
-                        <div class="search">
-                            <input type="text" placeholder="Search">
-                            <button><i class="fa fa-search"></i></button>
+                    <form class="form-inline mr-4">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    {{/if}}
+                    {{#if student}}
+                    <ul class="d-flex flex-row mt-2 flex-fill">
+                        <a class="nav-link active" href="/">Trang chủ</a>
+                        <a class="nav-link" href="/course?page=1&pageSize=10">Khóa học</a>
+                        <a class="nav-link" href="/course/user/{{user.id}}/watch-list">Khóa học yêu thích</a>
+                        <a class="nav-link" href="/course/user/{{user.id}}/subscription">Khóa học đang học</a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Danh mục
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="row">
+                                    {{#each cats}}
+                                    <div class="column">
+                                        <h5 style="color: dodgerblue;">{{name}}</h5>
+                                        {{#each childs}}
+                                        <a href="#">{{name}}</a>
+                                        {{/each}}
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
                         </div>
-                    </div> --}}
+                    </ul>
+                    <form class="form-inline mr-4">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    {{/if}}
+                    <div class="dropdown-account">
+                        <button class="dropbtn-account">
+                            {{user.name}}
+                        </button>
+                        <div class="dropdown-account-content">
+                            <div class="d-flex flex-column">
+                                <a class="dropdown-account-content-item" href="/account/profile/{{user.id}}">Profile</a>
+                                <a class="dropdown-account-content-item"
+                                    href="javascript: $('#frmSignout').submit();">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    {{else}}
+                    <ul class="d-flex flex-row mt-2 flex-fill">
+                        <a class="nav-link active" href="/home">Home</a>
+                        <a class="nav-link" href="/course?page=1&pageSize=10">Khóa học</a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Danh mục
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="row">
+                                    {{#each cats}}
+                                    <div class="column">
+                                        <h5 style="color: dodgerblue;">{{name}}</h5>
+                                        {{#each childs}}
+                                        <a href="#">{{name}}</a>
+                                        {{/each}}
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                     <div class="d-flex flex-row float-right" style="margin-left: 30px">
-                       <a href="/account/login">
-                                <button type="button" class="btn btn-success text-uppercase">
-                                    Đăng nhập
-                                </button>
-                            </a>
+                        <a href="/account/login">
+                            <button type="button" class="btn btn-success text-uppercase">
+                                Đăng nhập
+                            </button>
+                        </a>
                         <div style="margin-left: -16px;">
                             <a href="/account/register">
                                 <button type="button" class="btn btn-success text-uppercase">
@@ -107,11 +136,7 @@
                         </div>
                         {{/if}}
                     </div>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Page</a></li>
-                    </ul>
+                    {{!-- {{/if}} --}}
                 </div>
         </nav>
         <form id="frmSignout" action="/account/logout" method="POST"></form>
@@ -287,5 +312,45 @@
         color: #f9f9f9;
         padding: 10px;
         transition: 0.2s;
+    }
+
+    .dropdown-account {
+        float: right;
+        /* overflow: hidden; */
+    }
+
+    .dropdown-account .dropbtn-account {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: whitesmoke;
+        background-color: #28A745;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font: inherit;
+        margin: 0;
+    }
+
+    .navbar a:hover,
+    .dropdown-account:hover .dropbtn-account {
+        background-color: rgb(83, 182, 83);
+    }
+
+    .dropdown-account-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        width: auto;
+        right: 30px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-account:hover .dropdown-account-content {
+        display: block;
+    }
+
+    .dropdown-account-content-item {
+        padding: 8px 16px;
     }
 </style>
