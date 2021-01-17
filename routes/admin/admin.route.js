@@ -14,6 +14,7 @@ const stringUtil = require('../../utils/StringUtil');
 const userModel = require('../../models/user.model');
 const userType = require('../../enum/userType');
 const StringUtil = require('../../utils/StringUtil');
+const coursesSearch = require('../../user/user.route');
 
 let router = express.Router();
 
