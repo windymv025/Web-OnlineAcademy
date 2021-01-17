@@ -580,3 +580,10 @@ html {
   -ms-transform: rotate(-44deg);
   transform: rotate(-44deg);
 }
+.course-item-description-home {
+  overflow: hidden;
+  width: auto;
+  display: -webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient: vertical;
+}

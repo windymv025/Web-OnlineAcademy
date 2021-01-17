@@ -83,4 +83,11 @@ module.exports = {
         let result = await db.load(`select * from category where parent_category_id  = ${id}  and status = 1 order by created_at desc`)
         return result
     },
+    async getTopCategoryByCourse() {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
+        category c on c.id = cs.category_id and c.status = 1
+        left join users u on u.id = cs.created_by
+        where cs.status = 1 order by created at desc limit 5 `
+        return db.load(sql);
+    },
 }

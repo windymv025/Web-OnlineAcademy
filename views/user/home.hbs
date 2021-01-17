@@ -1,4 +1,5 @@
-{{!-- <!DOCTYPE html>
+{{!--
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -92,7 +93,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="col-md-3">
                     <div class="user">
                         <a href="wishlist.html" class="btn wishlist">
@@ -114,18 +115,105 @@
     <div class="header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-12">
                     <nav class="navbar bg-light">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
+                            {{!-- <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fa fa-home"></i>Home</a>
+                            </li> --}}
+                            <li class="nav-item d-flex flex-column align-items-start">
+                                <a class="nav-link text-danger" href="#" style="font-size: 20px;"><i
+                                        class="fa fa-plus-square mr-3"></i>New Courses</a>
+                                <section class="py-3 bg-light">
+                                    <div class="">
+                                        <div class="row">
+                                            {{#each this.newCourses}}
+                                            <div
+                                                class="col-lg-2 col-sm-3 shadow mb-4 ml-4 mr-4 bg-white rounded px-0  py-0 ">
+                                                <a class="reset-anchor box py-0 rounded-sm align-items-start" href="#">
+                                                    <div
+                                                        class="position-relative overflow-hidden d-block align-items-start">
+                                                        <div class="box-overlay">
+                                                        </div>
+                                                        <a href="#" style="padding: 0px;width: 100%; height: 70%">
+                                                            <img style="width: 100%; height: 70%" src="{{avatar_path}}"
+                                                                alt="" />
+                                                        </a>
+                                                    </div>
+                                                    <div
+                                                        class="d-flex flex-column align-items-start bg-white pb-2 px-3">
+                                                        <a href="#" style="margin-left: -16px; height: 70px">
+                                                            <h5 class="h5" style="width: 100%;">
+                                                                {{title}}
+                                                            </h5>
+                                                        </a>
+                                                        <p style="font-size: 13px; color: #0e5ec7">
+                                                            Giáo Viên: {{createdName}}
+                                                        </p>
+                                                        <p class="course-item-description-home"
+                                                            style="font-size: 14px;">
+                                                            {{short_description}}</p>
+                                                        <p style="font-size: 13px; color: #e6b619"> {{catName}}</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </section>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item d-flex flex-column align-items-start">
+                                <a class="nav-link text-danger" href="#" style="font-size: 20px;"><i
+                                        class="fa fa-trophy mr-3"></i>Courses Top View</a>
+                                <section class="py-3 bg-light">
+                                    <div class="">
+                                        <div class="row">
+                                            {{#each this.topViewCourse}}
+                                            <div
+                                                class="col-lg-2 col-sm-3 shadow mb-4 ml-4 mr-4 bg-white rounded px-0  py-0 ">
+                                                <a class="reset-anchor box py-0 rounded-sm align-items-start" href="#">
+                                                    <div
+                                                        class="position-relative overflow-hidden d-block align-items-start">
+                                                        <div class="box-overlay">
+                                                        </div>
+                                                        <a href="#" style="padding: 0px;width: 100%; height: 70%">
+                                                            <img style="width: 100%; height: 70%" src="{{avatar_path}}"
+                                                                alt="" />
+                                                        </a>
+                                                    </div>
+                                                    <div
+                                                        class="d-flex flex-column align-items-start bg-white pb-2 px-3">
+                                                        <a href="#" style="margin-left: -16px; height: 70px">
+                                                            <h5 class="h5" style="width: 100%;">
+                                                                {{title}}
+                                                            </h5>
+                                                        </a>
+                                                        <p style="font-size: 13px; color: #0e5ec7">
+                                                            Giáo Viên: {{createdName}}
+                                                        </p>
+                                                        <p class="course-item-description-home"
+                                                            style="font-size: 14px;">
+                                                            {{short_description}}</p>
+                                                    </div>
+                                                    <div class="d-flex flex-grow-1 justify-content-between px-3">
+                                                        <p style="font-size: 13px; color: #e6b619"> {{catName}}</p>
+
+                                                        <p
+                                                            style="color: rgb(1, 180, 16); font-size: 13px; text-align:right ">
+                                                            {{count}} views
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+                            {{!-- <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fa fa-trophy"></i>Best Courses</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-plus-square"></i>New Courses</a>
-                            </li>
+
+                            </li> --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fa fa-fire"></i>Hot Courses</a>
                             </li>
@@ -138,7 +226,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-md-6">
+                {{!-- <div class="col-md-6">
                     <div class="header-slider normal-slider">
                         <!-- Show slide  -->
                         <div class="header-slider-item">
@@ -164,8 +252,8 @@
                         </div>
 
                     </div>
-                </div>
-                
+                </div> --}}
+
             </div>
         </div>
     </div>
@@ -511,11 +599,12 @@
     <!-- Review Start -->
     <div class="review">
         <div class="container-fluid">
-            <div class="section-header" style="color: red; background-color: white; padding: 20px; margin-bottom: 30px;">
+            <div class="section-header"
+                style="color: red; background-color: white; padding: 20px; margin-bottom: 30px;">
                 <h1>Best Teacher</h1>
             </div>
             <div class="row align-items-center review-slider normal-slider">
-                
+
                 <div class="col-md-6">
                     <div class="review-slider-item">
                         <div class="review-img">

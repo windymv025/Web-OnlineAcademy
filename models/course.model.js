@@ -30,12 +30,12 @@ module.exports = {
         let result = await db.load(sql)
         return result;
     },
-    async block(id){
+    async block(id) {
         let sql = `update ${TBL_COURSE} set status = 2 where id = ${parseInt(id)}`
         let result = await db.load(sql)
         return result;
     },
-    async unBlock(id){
+    async unBlock(id) {
         let sql = `update ${TBL_COURSE} set status = 1 where id = ${parseInt(id)} and status = 2`
         let result = await db.load(sql)
         return result;
@@ -79,5 +79,23 @@ module.exports = {
         let sql = `select u.* , r.*  from review r join users u on u.id = r.user_id where r.status =1 and u.status = 1 and r.course_id = ${courseId}  order by r.created_at desc `
         let result = await db.load(sql);
         return result;
-    }
+    },
+    async getNewCourses() {
+        let sql = `select cs.*, c.name catName, u.name createdName from ${TBL_COURSE} cs join 
+        category c on c.id = cs.category_id and c.status = 1
+        left join users u on u.id = cs.created_by
+        where cs.status = 1 order by created_at desc limit 10 `
+        return db.load(sql);
+    },
+    async getCourseTopView() {
+        let sql = `select cs.*, c.name catName, u.name createdName, sb.count
+        from courses cs join 
+                category c on c.id = cs.category_id and c.status = 1
+                join (select s.course_id, count(*) count from subscriptions s
+                 where s.status = 1 and s.type = 2 group by s.course_id order by count desc) sb on sb.course_id = cs.id
+                left join users u on u.id = cs.created_by        
+                where cs.status = 1 limit 10 `
+
+        return db.load(sql);
+    },
 }
