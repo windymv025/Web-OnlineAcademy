@@ -1,22 +1,25 @@
 var express = require("express");
 var router = express.Router();
 const courseModel = require("../../models/course.model");
+const { route } = require("../course/course.route");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.render("home", {layout:false});
+  res.render("home", { layout: false });
 });
 router.get("/search", async (req, res, next) => {
   const title = req.params.name;
   console.log(title);
   const list = await courseModel.searchByTitle(title);
   console.log(list);
-  res.render('user/search_courses',{
-    layout:false,
-    courses:list,
+  res.render('user/search_courses', {
+    layout: false,
+    courses: list,
     empty: list.length === 0
   })
 });
+
+
 
 // router.get("/course", authAdmin, (req, res) => {});
 // let pageSize = req.query.pageSize;

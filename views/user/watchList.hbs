@@ -1,51 +1,161 @@
-<div class="header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <a class="nav-link text-danger" href="#" style="font-size: 20px;"><i class="fa fa-heart mr-3"></i> Những
-                    khóa học yêu thích</a>
-                {{#if this.empty}}
-                <p class="ml-4">Chưa có dữ liệu</p>
-                {{/if}}
-                <section class="py-3 bg-light">
-                    <div class="">
-                        <div class="row">
-                            {{#each this.courses}}
-                            <div class="col-lg-2 col-sm-3 shadow mb-4 ml-4 mr-4 bg-white rounded px-0  py-0 ">
-                                <a class="reset-anchor box py-0 rounded-sm align-items-start"
-                                    href="/course/{{id}}/detail">
-                                    <div class="position-relative overflow-hidden d-block align-items-start">
-                                        <div class="box-overlay">
-                                        </div>
-                                        <a href="/course/{{id}}/detail" style="padding: 0px;width: 100%; height: 70%">
-                                            <img style="width: 100%; height: 70%" src="{{avatar_path}}" alt="" />
-                                        </a>
-                                    </div>
-                                    <div class="d-flex flex-column align-items-start bg-white pb-2 px-3">
-                                        <a href="/course/{{id}}/detail" style="margin-left: 0px; height: 70px">
-                                            <h5 class="h5" style="width: 100%;">
-                                                {{title}}
-                                            </h5>
-                                        </a>
-                                        <p style="font-size: 13px; color: #0e5ec7">
-                                            Giáo Viên: {{createdName}}
-                                        </p>
-                                        <p class="course-item-description-home" style="font-size: 14px;">
-                                            {{short_description}}</p>
-                                        <p style="font-size: 13px; color: #e6b619"> {{catName}}</p>
-                                    </div>
-                                    <div class="d-flex -flex-column justify-content-between px-3 py-0"
-                                        style="margin-top: -24px;">
-                                        <p class="text" style="font-size: 14px;">{{review_score}} điểm</p>
-                                        <p class="text-success" style="font-size: 14px;">{{price}}</p>
-                                    </div>
-                                </a>
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </div>
+<div class="card">
+	<h5 class="card-header d-flex justify-content-between">
+		KHÓA HỌC YÊU THÍCH
+		{{!-- <a class="btn btn-outline-success" href="/admin/lecture/add" role="button">
+			<i class="fa fa-plus" aria-hidden="true"></i>
+			Thêm khóa học
+		</a> --}}
+	</h5>
+	{{#if this.empty}}
+	<div class="card-body">
+		<p class="card-text">Không có dữ liệu.</p>
+	</div>
+	{{else}}
+	<div class="card-body">
+		<section class="py-3 bg-light">
+			<div class="">
+				<div class="row">
+					{{#each this.courses}}
+					<div class="col-lg-2 col-sm-3 shadow mb-4 ml-4 mr-4 bg-white rounded px-0  py-0 ">
+						<a class="reset-anchor box py-0 rounded-sm align-items-start" href="/course/{{id}}/detail">
+							<div class="position-relative overflow-hidden d-block align-items-start">
+								<div class="box-overlay">
+								</div>
+								<a href="/course/{{id}}/detail" style="padding: 0px;width: 100%; height: 70%">
+									<img style="width: 100%; height: 70%" src="{{avatar_path}}" alt="" />
+								</a>
+							</div>
+							<div class="d-flex flex-column align-items-start bg-white pb-2 px-3 mt-3">
+								<a href="/course/{{id}}/detail" style="margin-left: 0px; height: 70px">
+									<h5 class="h5" style="width: 100%;">
+										{{title}}
+									</h5>
+								</a>
+								<p style="font-size: 13px; color: #0e5ec7">
+									Giáo Viên: {{createdName}}
+								</p>
+								<p class="course-item-description-home" style="font-size: 14px;">
+									{{short_description}}</p>
+								<p style="font-size: 13px; color: #e6b619"> {{catName}}</p>
+							</div>
+							<div class="d-flex -flex-column justify-content-between px-3 py-0" style="margin-top: -24px;">
+								<p class="text" style="font-size: 14px;">{{review_score}} điểm</p>
+								<p class="text-success" style="font-size: 14px;">{{price}}</p>
+							</div>
+						</a>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</section>
+		{{!-- <table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">#ID</th>
+					<th scope="col">Tiêu đề</th>
+					<th scope="col">Danh mục</th>
+					<th scope="col">Hình ảnh</th>
+					<th scope="col">Mô tả</th>
+					<th scope="col">Giá bán</th>
+					<th scope="col">Điểm số</th>
+					<th scope="col">Tạo bởi</th>
+					<th scope="col">Trạng thái</th>
+					<th scope="col">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each this.courses}}
+				<tr>
+					<th scope="row" class='clickable-row' data-href='course/{{id}}/detail'>{{id}}</th>
+					<td scope="row" class='clickable-row' data-href='course/{{id}}/detail'>{{title}}</td>
+					<td scope="row">{{catName}}</td>
+					<td scope="row" class="course-item clickable-row" data-href='course/{{id}}/detail'>
+						<img src="{{avatar_path}}" class="course-item" alt="...">
+					</td>
+					<td scope="row" class='clickable-row' data-href='course/{{id}}/detail'><span
+							class="course-item-description">{{short_description}}</span></td>
+					<td class='clickable-row' data-href='course/{{id}}/detail'>{{price}}</td>
+					<td class='clickable-row' data-href='course/{{id}}/detail'>{{review_score}}</td>
+					<td>{{createdName}}</td>
+					<td>
+						{{#ifCond status 1}}
+						<p class="text-success">Hoạt động</p>
+						{{/ifCond}}
+						{{#ifCond status 2}}
+						<p class="text-danger">Đình chỉ</p>
+						{{/ifCond}}
+					</td>
+					<td id="del" class="text-right">
+						<button class="btn btn-outline-danger" role="button" data-toggle="modal" data-id={{this}}
+							data-target="#deleteModal{{id}}" title="Delete course">
+							<i class="fa fa-trash-o" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table> --}}
+		{{!-- {{#each this.courses}}
+		<div id="deleteModal{{id}}" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Xóa khóa học </h4>
+					</div>
+					<form action="/admin/course/delete/{{id}}" method="POST">
+						<div class="modal-body d-flex flex-row">
+							<p id="title">Xác nhận xóa khóa học </p>
+							<p style="font-weight: 700; margin-left: 4px">{{title}} ?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default text-danger" data-dismiss="modal">Hủy</button>
+							<button type="submit" class="btn btn-default text-success">Đồng ý</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		{{/each}} --}}
+		{{!-- <nav aria-label="Page navigation " class="float-right">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.prevPage}}&pageSize=5" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				{{#prevPage 1 this.currentPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/prevPage}}
+				<li class="page-item active"><a class="page-link" href="?page={{this.currentPage}}&pageSize=5">{{
+						this.currentPage }}</a></li>
+				{{#nextPage this.currentPage this.totalPage 1}}
+				<li class="page-item"><a class="page-link" href="?page={{this}}&pageSize=5">{{ this }}</a></li>
+				{{/nextPage}}
+				<li class="page-item">
+					<a class="page-link" href="?page={{this.nextPage}}&pageSize=5" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div> --}}
+	{{!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#deleteModal">Open
+		Modal</button> --}}
+	{{/if}}
 </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function ($) {
+		$(".clickable-row").click(function () {
+			window.location = $(this).data("href");
+		});
+	});
+</script>

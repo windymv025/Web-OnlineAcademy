@@ -107,8 +107,10 @@ router.get(`/:id/detail`, (req, res) => {
     let courseChapter = courseModel.getCourseChapter(id);
     let gv = courseModel.getSubscription(id, 1);
     let student = courseModel.getSubscription(id, 2);
-    let review = courseModel.getCourseReview(id)
-    Promise.all([courseDetail, courseChapter, gv, student, review]).then((rows) => {
+    let review = courseModel.getCourseReview(id);
+    let userId = req.user ? Number(req.user.id) : 1;
+    let watchList = courseModel.checkWishList(id, userId);
+    Promise.all([courseDetail, courseChapter, gv, student, review, watchList]).then((rows) => {
         let detail = rows[0][0];
         let newPrice = ''
         if (detail.promo_price != null) {
@@ -121,6 +123,8 @@ router.get(`/:id/detail`, (req, res) => {
         let lectures = rows[2][0];
         let students = rows[3];
         let reviews = rows[4];
+        let isLove = rows[5].length > 0;
+
         let lessonP = []
         chaps.forEach((item) => {
             lessonP.push(courseModel.getCourseLesson(id, item.id))
@@ -159,7 +163,8 @@ router.get(`/:id/detail`, (req, res) => {
                     chapters: chaps,
                     lectures: lectures,
                     students: students,
-                    reviews: reviews
+                    reviews: reviews,
+                    isLove: isLove
                 });
             })
         })
@@ -180,7 +185,7 @@ router.post(`/:id/review`, auth, (req, res) => {
 router.get("/search", async (req, res, next) => {
     const title = req.query.keyword;
     let pageSize = req.query.pageSize ?? 100
-    let page = req.query.page  ? req.query.page - 1 : 0
+    let page = req.query.page ? req.query.page - 1 : 0
     const p = courseModel.searchByTitle(title, page, pageSize);
     const numTotal = courseModel.searchByTitle(title, page, 1000);
     Promise.all([p, numTotal]).then(function (rows) {
@@ -208,5 +213,20 @@ router.get("/search", async (req, res, next) => {
         console.error(err);
         res.send('View error log at server console.');
     });
+});
+
+router.get("/:id/wish-list/add", auth, async (req, res, next) => {
+    const courseId = Number(req.params.id);
+    const userId = req.user.id;
+    courseModel.addWishList(courseId, userId).then(() => {
+        res.redirect(req.header('Referer'))
+    })
+});
+router.get("/:id/wish-list/remove", auth, async (req, res, next) => {
+    const courseId = Number(req.params.id); 
+    const userId = req.user.id;
+    courseModel.removeWishList(courseId, userId).then(() => {
+        res.redirect(req.header('Referer'))
+    })
 });
 module.exports = router;

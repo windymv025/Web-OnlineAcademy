@@ -17,7 +17,7 @@
                 Xóa khóa học
             </button>
             <button type="submit" class="btn btn-success" formaction="/admin/course/{{this.detail.id}}/un-block">
-                <i class="fa fa-check"></i>
+                <i class="fa fa-heart mr-3"></i>
                 Bỏ đình chỉ
             </button>
             {{/ifCond}}
@@ -35,8 +35,19 @@
             <h1>{{this.detail.title}}</h1>
             <p class="col-6">{{this.detail.short_description}}</p>
         </div>
-        <div>
+        <div class="col-lg-3 col-sm-4 d-flex flex-column align-items-end">
             <h4 class="text-success">{{this.detail.price}}</h4>
+            {{#if this.isLove}}
+            <a type="submit" class="btn btn-warning" href="/course/{{this.detail.id}}/wish-list/remove">
+                <i class="fa fa-heart mr-3"></i>
+                Bỏ yêu thích
+            </a>
+            {{else}}
+            <a type="submit" class="btn btn-success" href="/course/{{this.detail.id}}/wish-list/add">
+                <i class="fa fa-heart mr-3"></i>
+                Thêm vào yêu thích
+            </a>
+            {{/if}}
         </div>
     </div>
     <div class="row">

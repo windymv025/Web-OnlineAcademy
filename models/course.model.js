@@ -155,6 +155,19 @@ module.exports = {
         // }
         return await db.load(sql);
         // },
+    },
+
+    addWishList: (courseId, userId) => {
+        let sql = `insert into watch_list(course_id, user_id,  created_at, status) values(${courseId},${userId}, now(), 1)`
+        return db.load(sql)
+    },
+    removeWishList: (courseId, userId) => {
+        let sql = `delete from watch_list where course_id = ${courseId} and user_id = ${userId} `
+        return db.load(sql)
+    },
+    async checkWishList(courseId, userId){
+        let sql = `select w.* from watch_list w join users u on u.id = w.user_id and u.type = 2 where w.course_id = ${courseId} and w.user_id = ${userId} and w.status = 1 `
+        return await db.load(sql)
     }
 }
 
